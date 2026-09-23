@@ -75,3 +75,10 @@ Nothing in this data separates those, and more events will not fix it. Read a
 wide spread as "this deck's result varied a lot by pilot" — true and useful —
 rather than "this deck rewards skill", which is a causal claim the design does
 not support.
+
+## Published
+
+Dashboard: https://zachyattack23.github.io/mtg-modern-meta/
+
+`docs/index.html` is the built, self-contained dashboard that GitHub Pages
+serves. `build_standalone.py` regenerates it, so a push republishes the site.

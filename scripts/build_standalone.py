@@ -48,6 +48,8 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=pathlib.Path,
                     default=ROOT / "dist" / "modern-ceiling-report.html")
+    ap.add_argument("--no-docs", action="store_true",
+                    help="skip the docs/index.html copy GitHub Pages serves")
     args = ap.parse_args()
 
     page = (WEB / "index.html").read_text(encoding="utf-8")
@@ -65,10 +67,22 @@ def main() -> int:
     note = (f"\n<!-- Modern Ceiling Report - self-contained build {stamp}.\n"
             f"     Open directly, host anywhere, no server required. -->\n")
 
+    html = SKELETON_HEAD + page + note + SKELETON_TAIL
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(SKELETON_HEAD + page + note + SKELETON_TAIL,
-                        encoding="utf-8")
+    args.out.write_text(html, encoding="utf-8")
     print(f"wrote {args.out} ({args.out.stat().st_size / 1e6:.2f} MB)")
+
+    # GitHub Pages serves from the repo root or /docs on a branch -- it cannot be
+    # pointed at dist/, which is gitignored anyway. Writing the same build to
+    # docs/index.html means a push republishes the site with no extra step.
+    if not args.no_docs:
+        docs = ROOT / "docs"
+        docs.mkdir(exist_ok=True)
+        (docs / "index.html").write_text(html, encoding="utf-8")
+        # Stops Jekyll from touching the file on Pages.
+        (docs / ".nojekyll").write_text("")
+        print(f"wrote {docs / 'index.html'} (GitHub Pages source)")
     return 0
 
 
