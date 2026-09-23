@@ -14,7 +14,14 @@ python3 scripts/mine_archetypes.py                               # signature rep
 python3 scripts/build_dataset.py                                 # classify + stats
 python3 scripts/build_cards.py                                   # flex slots
 python3 scripts/build_web_payload.py                             # web/data.js
+python3 scripts/build_standalone.py                              # one shareable file
 ```
+
+`build_standalone.py` produces `dist/modern-ceiling-report.html`: a single
+self-contained file with the data inlined and its own charset declaration. It
+opens by double-clicking, survives being emailed, and can be dropped on any
+static host. That is the copy to share with people who do not have access to
+the private Artifact.
 
 Add an event by putting its melee tournament id in `tournaments.json` and
 re-running. Everything is cached by id, so a re-run only fetches what is new.
