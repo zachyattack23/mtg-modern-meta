@@ -164,19 +164,6 @@
       "notes": "lift >170"
     },
     {
-      "name": "Broodscale",
-      "parent": null,
-      "priority": 10,
-      "all_of": {
-        "Basking Broodscale": 1
-      },
-      "any_of": [
-        "Blade of the Bloodchief",
-        "Glaring Fleshraker"
-      ],
-      "notes": "99%/1%. Must precede Eldrazi: these lists also run Emrakul + Sowing Mycospawn"
-    },
-    {
       "name": "Goryo's Vengeance",
       "parent": null,
       "priority": 10,
@@ -559,6 +546,63 @@
         "Sokenzan, Crucible of Defiance"
       ],
       "notes": "UW, no black or red. Splashes the energy creatures without being an Energy deck."
+    },
+    {
+      "name": "Gruul Broodscale",
+      "parent": "Broodscale",
+      "priority": 10,
+      "all_of": {
+        "Basking Broodscale": 1
+      },
+      "any_groups": [
+        {
+          "cards": [
+            "Blade of the Bloodchief",
+            "Glaring Fleshraker"
+          ],
+          "min": 1
+        },
+        {
+          "cards": [
+            "Stomping Ground",
+            "Unholy Heat",
+            "Wooded Foothills",
+            "Grove of the Burnwillows",
+            "Mountain",
+            "Copperline Gorge",
+            "Karplusan Forest"
+          ],
+          "min": 1
+        }
+      ],
+      "notes": "red build. Splitting on colour, not on Ugin's Labyrinth: the Labyrinth is a consequence of the build, and using it as the splitter would make the comparison circular."
+    },
+    {
+      "name": "Mono-Green Broodscale",
+      "parent": "Broodscale",
+      "priority": 11,
+      "all_of": {
+        "Basking Broodscale": 1
+      },
+      "any_groups": [
+        {
+          "cards": [
+            "Blade of the Bloodchief",
+            "Glaring Fleshraker"
+          ],
+          "min": 1
+        }
+      ],
+      "none_of": [
+        "Stomping Ground",
+        "Unholy Heat",
+        "Wooded Foothills",
+        "Grove of the Burnwillows",
+        "Mountain",
+        "Copperline Gorge",
+        "Karplusan Forest"
+      ],
+      "notes": "Ugin's Labyrinth 100%, Devourer of Destiny 88%, Yavimaya 75% -- 11 cards separate it from Gruul by >40pp"
     }
   ]
 }
