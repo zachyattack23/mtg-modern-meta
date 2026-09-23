@@ -236,7 +236,118 @@ def card_effect(archetype_name: str, slot: FlexSlot,
     )
 
 
-def benjamini_hochberg(effects: list[CardEffect], alpha: float = 0.10) -> None:
+@dataclass
+class CopyCurve:
+    """Win rate as a function of how many copies a pilot ran.
+
+    A binary with/without split throws away the thing that usually matters:
+    the difference between one copy and four. Copy counts are an *ordered*
+    exposure, so the right test is Cochran-Armitage for trend, which uses all
+    five levels at once rather than picking an arbitrary cut point.
+    """
+    archetype: str
+    card: str
+    zone: str
+    levels: list[int]                 # copy counts present, ascending
+    pilots: list[int]
+    matches: list[int]
+    wins: list[int]
+    rates: list[float]
+    cis: list[tuple[float, float]]
+    slope_per_copy: float             # OLS fit, win-rate points per extra copy
+    z: float
+    p_value: float
+    q_value: float = float("nan")
+    design_effect: float = 1.0
+    min_detectable_slope: float = float("nan")
+
+
+def _design_effect(groups: list[list[tuple[int, int]]]) -> float:
+    """Variance inflation from clustering matches within pilots.
+
+    Matches by the same pilot are not independent draws, so treating each match
+    as its own trial overstates significance. This estimates the usual survey
+    design effect, 1 + (mean cluster size - 1) * ICC, with the ICC taken from
+    the between-pilot spread in win rate.
+    """
+    sizes, rates = [], []
+    for grp in groups:
+        for w, n in grp:
+            if n > 0:
+                sizes.append(n)
+                rates.append(w / n)
+    if len(rates) < 5:
+        return 1.0
+    m_bar = float(np.mean(sizes))
+    p_bar = float(np.mean(rates))
+    within = p_bar * (1 - p_bar)
+    if within <= 0:
+        return 1.0
+    between = float(np.var(rates, ddof=1)) - within / max(m_bar, 1)
+    icc = max(0.0, between / within)
+    return float(max(1.0, 1 + (m_bar - 1) * icc))
+
+
+def copy_curve(archetype_name: str, slot: FlexSlot,
+               deck_results: list[tuple[dict, int, int]],
+               *, min_pilots_per_level: int = 4) -> CopyCurve | None:
+    """Win rate at each copy count, with a Cochran-Armitage trend test."""
+    buckets: dict[int, list[tuple[int, int]]] = collections.defaultdict(list)
+    for deck, wins, matches in deck_results:
+        if matches <= 0:
+            continue
+        qty = min(deck[slot.zone].get(slot.card, 0), MAX_COPIES)
+        buckets[qty].append((wins, matches))
+
+    levels = sorted(k for k, v in buckets.items() if len(v) >= min_pilots_per_level)
+    if len(levels) < 3:          # need a curve, not a two-point split
+        return None
+
+    groups = [buckets[k] for k in levels]
+    pilots = [len(g) for g in groups]
+    wins = [sum(w for w, _ in g) for g in groups]
+    matches = [sum(n for _, n in g) for g in groups]
+    if min(matches) < 25:
+        return None
+
+    total_w, total_n = sum(wins), sum(matches)
+    p_bar = total_w / total_n
+    t = np.array(levels, dtype=float)
+    n = np.array(matches, dtype=float)
+    r = np.array(wins, dtype=float)
+
+    # Cochran-Armitage trend statistic.
+    stat = float(np.sum(t * (r - n * p_bar)))
+    var = p_bar * (1 - p_bar) * float(np.sum(n * t * t) - np.sum(n * t) ** 2 / total_n)
+    deff = _design_effect(groups)
+    var *= deff
+    if var <= 0:
+        return None
+    z = stat / math.sqrt(var)
+    p_value = float(2 * (1 - sps.norm.cdf(abs(z))))
+
+    rates = (r / n).tolist()
+    from .stats import wilson
+    cis = [wilson(int(w), int(m)) for w, m in zip(wins, matches)]
+
+    # Slope in win-rate points per extra copy, weighted by matches.
+    slope = float(np.polyfit(t, r / n, 1, w=np.sqrt(n))[0])
+
+    # Smallest slope this design could have resolved, same 80%/0.05 convention.
+    spread = float(np.sqrt(np.sum(n * (t - np.average(t, weights=n)) ** 2)))
+    mds = (float((sps.norm.ppf(0.975) + sps.norm.ppf(0.80))
+                 * math.sqrt(p_bar * (1 - p_bar) * deff) / spread)
+           if spread > 0 else float("nan"))
+
+    return CopyCurve(
+        archetype=archetype_name, card=slot.card, zone=slot.zone,
+        levels=levels, pilots=pilots, matches=matches, wins=wins,
+        rates=rates, cis=cis, slope_per_copy=slope, z=z, p_value=p_value,
+        design_effect=deff, min_detectable_slope=mds,
+    )
+
+
+def benjamini_hochberg(effects: list, alpha: float = 0.10) -> None:
     """Attach BH-adjusted q-values in place.
 
     Without this the report is a false-discovery generator: a thousand tests at

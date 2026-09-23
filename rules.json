@@ -253,38 +253,6 @@
       "notes": "lift >230"
     },
     {
-      "name": "Blink",
-      "parent": null,
-      "priority": 39,
-      "any_of": [
-        "Flickerwisp",
-        "Phelia, Exuberant Shepherd",
-        "Overlord of the Balemurk",
-        "Emperor of Bones",
-        "Ephemerate",
-        "Witch Enchanter // Witch-Blessed Meadow"
-      ],
-      "any_min": 2,
-      "notes": "runs after Goryo's, which shares the shell. Ephemerate/Witch Enchanter added so the Azorius build is not stolen by Boros Energy, which it overlaps on Guide of Souls + Ocelot Pride despite playing no red."
-    },
-    {
-      "name": "Boros Energy",
-      "parent": null,
-      "priority": 40,
-      "any_of": [
-        "Guide of Souls",
-        "Goblin Bombardment",
-        "Ajani, Nacatl Pariah // Ajani, Nacatl Avenger",
-        "Galvanic Discharge",
-        "Ragavan, Nimble Pilferer"
-      ],
-      "any_min": 2,
-      "notes": "tightened: needs two energy payoffs beyond Ocelot Pride, so white Blink lists fall through to the Blink rule",
-      "all_of": {
-        "Ocelot Pride": 1
-      }
-    },
-    {
       "name": "Izzet Prowess",
       "parent": null,
       "priority": 40,
@@ -442,6 +410,155 @@
       ],
       "any_min": 2,
       "notes": "catch-all for the Gruul/Golgari/Izzet Eldrazi piles; runs last so Trudge, Tron and Broodscale claim theirs first"
+    },
+    {
+      "name": "Jeskai Energy",
+      "parent": "Energy",
+      "priority": 36,
+      "all_of": {
+        "Ocelot Pride": 1,
+        "Steam Vents": 1
+      },
+      "any_of": [
+        "Guide of Souls",
+        "Goblin Bombardment",
+        "Galvanic Discharge",
+        "Ragavan, Nimble Pilferer",
+        "Ajani, Nacatl Pariah // Ajani, Nacatl Avenger"
+      ],
+      "any_min": 2,
+      "notes": "blue-red version; 94% Steam Vents. Runs before Blink, which it overlaps on Ephemerate + Phelia."
+    },
+    {
+      "name": "Boros Energy",
+      "parent": "Energy",
+      "priority": 37,
+      "all_of": {
+        "Ocelot Pride": 1
+      },
+      "any_of": [
+        "Guide of Souls",
+        "Goblin Bombardment",
+        "Galvanic Discharge",
+        "Ragavan, Nimble Pilferer",
+        "Ajani, Nacatl Pariah // Ajani, Nacatl Avenger"
+      ],
+      "any_min": 2,
+      "none_of": [
+        "Steam Vents"
+      ],
+      "notes": "the red-white build without the blue splash"
+    },
+    {
+      "name": "Esper Blink",
+      "parent": "Blink",
+      "priority": 39,
+      "all_of": {
+        "Ephemerate": 1
+      },
+      "any_groups": [
+        {
+          "cards": [
+            "Flickerwisp",
+            "Overlord of the Balemurk",
+            "Emperor of Bones",
+            "Phelia, Exuberant Shepherd",
+            "White Orchid Phantom",
+            "Witch Enchanter // Witch-Blessed Meadow",
+            "Solitude"
+          ],
+          "min": 2
+        },
+        {
+          "cards": [
+            "Godless Shrine",
+            "Watery Grave",
+            "Shadowy Backstreet",
+            "Swamp",
+            "Undercity Sewers",
+            "Takenuma, Abandoned Mire"
+          ],
+          "min": 1
+        }
+      ],
+      "notes": "the dominant build. Thoughtseize/Fatal Push/Shadowy Backstreet at 97%+"
+    },
+    {
+      "name": "Jeskai Blink",
+      "parent": "Blink",
+      "priority": 40,
+      "all_of": {
+        "Ephemerate": 1
+      },
+      "any_groups": [
+        {
+          "cards": [
+            "Flickerwisp",
+            "Overlord of the Balemurk",
+            "Emperor of Bones",
+            "Phelia, Exuberant Shepherd",
+            "White Orchid Phantom",
+            "Witch Enchanter // Witch-Blessed Meadow",
+            "Solitude"
+          ],
+          "min": 2
+        },
+        {
+          "cards": [
+            "Steam Vents",
+            "Sacred Foundry",
+            "Elegant Parlor",
+            "Mountain",
+            "Sokenzan, Crucible of Defiance"
+          ],
+          "min": 1
+        }
+      ],
+      "none_of": [
+        "Ragavan, Nimble Pilferer",
+        "Goblin Bombardment",
+        "Ajani, Nacatl Pariah // Ajani, Nacatl Avenger",
+        "Thraben Charm",
+        "Dalkovan Encampment",
+        "Voice of Victory"
+      ],
+      "notes": "distinct from Jeskai Energy: 0% Ragavan/Bombardment/Ajani, but 80% Teferi and 100% Consign to Memory. Small sample."
+    },
+    {
+      "name": "Azorius Blink",
+      "parent": "Blink",
+      "priority": 41,
+      "all_of": {
+        "Ephemerate": 1
+      },
+      "any_groups": [
+        {
+          "cards": [
+            "Flickerwisp",
+            "Overlord of the Balemurk",
+            "Emperor of Bones",
+            "Phelia, Exuberant Shepherd",
+            "White Orchid Phantom",
+            "Witch Enchanter // Witch-Blessed Meadow",
+            "Solitude"
+          ],
+          "min": 2
+        }
+      ],
+      "none_of": [
+        "Godless Shrine",
+        "Watery Grave",
+        "Shadowy Backstreet",
+        "Swamp",
+        "Undercity Sewers",
+        "Takenuma, Abandoned Mire",
+        "Steam Vents",
+        "Sacred Foundry",
+        "Elegant Parlor",
+        "Mountain",
+        "Sokenzan, Crucible of Defiance"
+      ],
+      "notes": "UW, no black or red. Splashes the energy creatures without being an Energy deck."
     }
   ]
 }

@@ -1,6 +1,613 @@
 [
-  {"id": 405590, "label": "SCG CON Dallas - Hobbit Spotlight"},
-  {"id": 405588, "label": "RC SCG CON Baltimore"},
-  {"id": 441441, "label": "Spotlight Hobbit - Brisbane"},
-  {"id": 451148, "label": "MTG China Open S13 RC"}
+  {
+    "id": 405590,
+    "label": "SCG CON Dallas - Hobbit Spotlight"
+  },
+  {
+    "id": 405588,
+    "label": "RC SCG CON Baltimore"
+  },
+  {
+    "id": 441441,
+    "label": "Spotlight Hobbit - Brisbane"
+  },
+  {
+    "id": 451148,
+    "label": "MTG China Open S13 RC"
+  },
+  {
+    "id": 429044,
+    "label": "Mont Weekly Modern",
+    "date": "2026-06-03",
+    "players": 20,
+    "swiss_rounds": 4
+  },
+  {
+    "id": 419570,
+    "label": "Sørlandsmesterskap 2026 + RCQ",
+    "date": "2026-06-06",
+    "players": 22,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 419575,
+    "label": "Modern RCQ Kristiansand 2026",
+    "date": "2026-06-07",
+    "players": 17,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 434568,
+    "label": "Mont Weekly Modern",
+    "date": "2026-06-10",
+    "players": 16,
+    "swiss_rounds": 4
+  },
+  {
+    "id": 423709,
+    "label": "Mont Destination Event",
+    "date": "2026-06-13",
+    "players": 155,
+    "swiss_rounds": 8
+  },
+  {
+    "id": 413009,
+    "label": "Season 5 - Round 1 RCQ .5k!",
+    "date": "2026-06-13",
+    "players": 18,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 436596,
+    "label": "Modern RCQ",
+    "date": "2026-06-13",
+    "players": 17,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 435444,
+    "label": "WildGames NM Bye - Lørdag",
+    "date": "2026-06-13",
+    "players": 17,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 435557,
+    "label": "NYX Game Arena - Store Qualifier S13",
+    "date": "2026-06-14",
+    "players": 29,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 424989,
+    "label": "$1K Modern RCQ - SCG CON Las Vegas - Friday - 10:00 am",
+    "date": "2026-06-26",
+    "players": 82,
+    "swiss_rounds": 7
+  },
+  {
+    "id": 424997,
+    "label": "ReCQ - Modern - Las Vegas - Friday - 4:00 pm",
+    "date": "2026-06-26",
+    "players": 31,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 424995,
+    "label": "ReCQ - Modern - Las Vegas - Friday - 1:00 pm",
+    "date": "2026-06-26",
+    "players": 20,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 424999,
+    "label": "ReCQ - Modern - Las Vegas - Saturday - 4:00 pm",
+    "date": "2026-06-27",
+    "players": 64,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 424998,
+    "label": "ReCQ - Modern - Las Vegas - Saturday - 12:00 pm",
+    "date": "2026-06-27",
+    "players": 49,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 425068,
+    "label": "$uper $unday RCQ - Modern - SCG CON Las Vegas - Sunday - 10:00 am",
+    "date": "2026-06-28",
+    "players": 75,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 425000,
+    "label": "ReCQ - Modern - Las Vegas - Sunday - 12:00 pm",
+    "date": "2026-06-28",
+    "players": 38,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 433100,
+    "label": "CAMS Season 13 - Modern",
+    "date": "2026-06-28",
+    "players": 21,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 441740,
+    "label": "CDF 2026 Destination qualifier",
+    "date": "2026-07-05",
+    "players": 53,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 442516,
+    "label": "Modern RCQ - F2FTour Montreal",
+    "date": "2026-07-11",
+    "players": 79,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 429111,
+    "label": "Advantage Games Modern RCQ 2026-2027 Season Round 1",
+    "date": "2026-07-11",
+    "players": 39,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 435243,
+    "label": "SPACT Open 2026",
+    "date": "2026-07-11",
+    "players": 36,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 427266,
+    "label": "Modern Land Run RCQ July 2026",
+    "date": "2026-07-12",
+    "players": 28,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 434455,
+    "label": "Pro Tour Magic: The Gathering | Marvel Super Heroes in Amsterdam, Netherlands",
+    "date": "2026-07-17",
+    "players": 362,
+    "swiss_rounds": 16
+  },
+  {
+    "id": 413010,
+    "label": "Season 5 - Round 1 RCQ 1k!",
+    "date": "2026-07-25",
+    "players": 49,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 444357,
+    "label": "HobbyGameMall 한일챔피언스컵 Season5 Round1 Modern 7/25 12 PM",
+    "date": "2026-07-25",
+    "players": 17,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 444423,
+    "label": "[Brussels Sun 09:30] Destination Qualifier: Modern",
+    "date": "2026-07-26",
+    "players": 134,
+    "swiss_rounds": 8
+  },
+  {
+    "id": 442216,
+    "label": "第4回 S-Trad ARENA フォーマット：モダン",
+    "date": "2026-07-26",
+    "players": 38,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 447684,
+    "label": "CAM Series Qualifier S13 - NYX Game Arena",
+    "date": "2026-07-26",
+    "players": 23,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 444798,
+    "label": "Mont Weekly Modern",
+    "date": "2026-07-29",
+    "players": 17,
+    "swiss_rounds": 4
+  },
+  {
+    "id": 447125,
+    "label": "Spilltinget Modern RCQ",
+    "date": "2026-07-29",
+    "players": 17,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 442835,
+    "label": "RCQ Modern Mont Shop",
+    "date": "2026-08-01",
+    "players": 35,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 444795,
+    "label": "US RCQ | 2026-27 Round 1 Modern RCQ",
+    "date": "2026-08-01",
+    "players": 18,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 448015,
+    "label": "NM2026 - Last Chance Bye - Fredag 16:00",
+    "date": "2026-08-07",
+    "players": 25,
+    "swiss_rounds": 4
+  },
+  {
+    "id": 447882,
+    "label": "Öcher Modern Series Vol. 1",
+    "date": "2026-08-09",
+    "players": 16,
+    "swiss_rounds": 4
+  },
+  {
+    "id": 428281,
+    "label": "Saturday 8.15 - LFG Con 2026 - MTG: Modern 5k RCQ (4-Slot)",
+    "date": "2026-08-15",
+    "players": 61,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 453517,
+    "label": "Saturday 8.15 - LFG Con 2026 - MTG: Runback Qualifer (2-Slot)",
+    "date": "2026-08-15",
+    "players": 31,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 428285,
+    "label": "Sunday 8.16 - LFG Con 2026 - MTG: Modern 5k RCQ (4-Slot)",
+    "date": "2026-08-16",
+    "players": 51,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 453561,
+    "label": "Sunday 8.16 - LFG Con 2026 - MTG: Runback Qualifer (2-Slot)",
+    "date": "2026-08-16",
+    "players": 19,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445558,
+    "label": "1ª Etapa CLM Modern",
+    "date": "2026-08-19",
+    "players": 17,
+    "swiss_rounds": 4
+  },
+  {
+    "id": 437444,
+    "label": "NRG Series: Magic $2.5k Modern Trial",
+    "date": "2026-08-22",
+    "players": 99,
+    "swiss_rounds": 7
+  },
+  {
+    "id": 451375,
+    "label": "2ª Etapa CLM Modern",
+    "date": "2026-09-02",
+    "players": 18,
+    "swiss_rounds": 4
+  },
+  {
+    "id": 442754,
+    "label": "ReCQ - Modern - Dallas - Friday - 1:00 pm",
+    "date": "2026-09-04",
+    "players": 116,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 462365,
+    "label": "FLIGHT A - $1K Modern RCQ - SCG CON Dallas",
+    "date": "2026-09-04",
+    "players": 103,
+    "swiss_rounds": 7
+  },
+  {
+    "id": 462366,
+    "label": "FLIGHT B - $1K Modern RCQ - SCG CON Dallas",
+    "date": "2026-09-04",
+    "players": 102,
+    "swiss_rounds": 7
+  },
+  {
+    "id": 442812,
+    "label": "ReCQ - Modern - Dallas - Saturday - 3:00 pm",
+    "date": "2026-09-05",
+    "players": 40,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 442809,
+    "label": "ReCQ - Modern - Dallas - Saturday - 12:00 pm",
+    "date": "2026-09-05",
+    "players": 17,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 442877,
+    "label": "$uper $unday RCQ - Modern - SCG CON Dallas - Sunday - 10:00 am",
+    "date": "2026-09-06",
+    "players": 157,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 445385,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 9:30 am (Online Registration Only)",
+    "date": "2026-09-11",
+    "players": 134,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445437,
+    "label": "$1K Modern RCQ - SCG CON Baltimore - Friday - 10:00 am",
+    "date": "2026-09-11",
+    "players": 132,
+    "swiss_rounds": 8
+  },
+  {
+    "id": 445415,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 1:00 pm",
+    "date": "2026-09-11",
+    "players": 89,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445422,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 1:30 pm",
+    "date": "2026-09-11",
+    "players": 89,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445414,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 12:00 pm",
+    "date": "2026-09-11",
+    "players": 86,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445405,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 10:30 am",
+    "date": "2026-09-11",
+    "players": 81,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445424,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 3:30 pm",
+    "date": "2026-09-11",
+    "players": 81,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445423,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 2:30 pm",
+    "date": "2026-09-11",
+    "players": 80,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445400,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 10:00 am",
+    "date": "2026-09-11",
+    "players": 79,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445412,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 11:00 am",
+    "date": "2026-09-11",
+    "players": 71,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445420,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 11:30 am",
+    "date": "2026-09-11",
+    "players": 66,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445417,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 3:00 pm",
+    "date": "2026-09-11",
+    "players": 66,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445416,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 2:00 pm",
+    "date": "2026-09-11",
+    "players": 65,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445421,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 12:30 pm",
+    "date": "2026-09-11",
+    "players": 61,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445425,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 4:30 pm",
+    "date": "2026-09-11",
+    "players": 56,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445419,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 5:00 pm",
+    "date": "2026-09-11",
+    "players": 56,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445418,
+    "label": "LCQ - Modern - SCG CON Baltimore - Friday - 4:00 pm",
+    "date": "2026-09-11",
+    "players": 52,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445383,
+    "label": "$5K RCQ - Modern - SCG CON Baltimore - Saturday - 9:30 am",
+    "date": "2026-09-12",
+    "players": 128,
+    "swiss_rounds": 7
+  },
+  {
+    "id": 445396,
+    "label": "ReCQ - Modern - Baltimore - Saturday - 4:00 pm",
+    "date": "2026-09-12",
+    "players": 79,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 454051,
+    "label": "Autumn Modern Championship",
+    "date": "2026-09-12",
+    "players": 65,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 445394,
+    "label": "ReCQ - Modern - Baltimore - Saturday - 2:00 pm",
+    "date": "2026-09-12",
+    "players": 64,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445389,
+    "label": "ReCQ - Modern - Baltimore - Saturday - 12:00 pm",
+    "date": "2026-09-12",
+    "players": 32,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 449289,
+    "label": "Öcher Modern Series Vol. 2",
+    "date": "2026-09-12",
+    "players": 17,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 445556,
+    "label": "$uper $unday RCQ - Modern - SCG CON Baltimore - Sunday - 10:00 am",
+    "date": "2026-09-13",
+    "players": 362,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 445476,
+    "label": "ReCQ - Modern - SCG CON Baltimore - Sunday - 1:00 pm",
+    "date": "2026-09-13",
+    "players": 78,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 451377,
+    "label": "3ª Etapa CLM Modern",
+    "date": "2026-09-16",
+    "players": 17,
+    "swiss_rounds": 4
+  },
+  {
+    "id": 448946,
+    "label": "MODERN APOCALYPSE 2026 Sabato 19 settembre 14.00",
+    "date": "2026-09-19",
+    "players": 34,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 467239,
+    "label": "ACUP Clasificatorio Arcanis 2026",
+    "date": "2026-09-20",
+    "players": 24,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 427426,
+    "label": "MTG SEA Championships Malaysia Open 2026-27 Round 1",
+    "date": "2026-05-24",
+    "players": 69,
+    "swiss_rounds": 7
+  },
+  {
+    "id": 430565,
+    "label": "4º Torneio - 15ª Liga Arena Guardians",
+    "date": "2026-05-25",
+    "players": 18,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 421583,
+    "label": "$1K Modern RCQ - SCG CON Washington DC - Friday - 10:00 am",
+    "date": "2026-05-29",
+    "players": 76,
+    "swiss_rounds": 7
+  },
+  {
+    "id": 421364,
+    "label": "ReCQ - Modern - SCG CON Washington DC - Saturday - 2:00 pm",
+    "date": "2026-05-30",
+    "players": 101,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 421362,
+    "label": "ReCQ - Modern - SCG CON Washington DC - Saturday - 12:00 pm",
+    "date": "2026-05-30",
+    "players": 94,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 421365,
+    "label": "ReCQ - Modern - SCG CON Washington DC - Saturday - 4:00 pm",
+    "date": "2026-05-30",
+    "players": 92,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 415728,
+    "label": "Paragon Gaming Modern RCQ",
+    "date": "2026-05-30",
+    "players": 31,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 421360,
+    "label": "$uper $unday RCQ - Modern - SCG CON Washington DC - Sunday - 10:00 am",
+    "date": "2026-05-31",
+    "players": 200,
+    "swiss_rounds": 6
+  },
+  {
+    "id": 421366,
+    "label": "ReCQ - Modern - SCG CON Washington DC - Sunday - 1:00 pm",
+    "date": "2026-05-31",
+    "players": 65,
+    "swiss_rounds": 5
+  },
+  {
+    "id": 420211,
+    "label": "US RCQ | 2026-27 Round 1 Modern",
+    "date": "2026-05-31",
+    "players": 18,
+    "swiss_rounds": 5
+  }
 ]

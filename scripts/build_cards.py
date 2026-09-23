@@ -97,15 +97,27 @@ def main() -> int:
         rec = records.get(arch, {}).get(owner)
         if not rec:
             continue
-        by_archetype[arch].append((deck_cards[did], rec[0], rec[1]))
+        # Card analysis runs unweighted on integer counts: the trend test is a
+        # count statistic, and recency decay is a question about the metagame,
+        # not about whether a card choice worked.
+        by_archetype[arch].append((deck_cards[did], int(round(rec[0])), rec[2]))
 
     out: dict[str, dict] = {}
     all_effects: list[cards.CardEffect] = []
+    all_curves: list[cards.CopyCurve] = []
     for arch, entries in by_archetype.items():
         if len(entries) < args.min_decks:
             continue
         slots, effects = cards.analyse_archetype(arch, entries, ignore=ignore)
         all_effects.extend(effects)
+
+        # Copy-count curves: the 0->4 dose-response, not just with/without.
+        curves = []
+        for slot in slots:
+            curve = cards.copy_curve(arch, slot, entries)
+            if curve:
+                curves.append(curve)
+        all_curves.extend(curves)
         out[arch] = {
             "n_decks": len(entries),
             "slots": [{
@@ -118,6 +130,18 @@ def main() -> int:
 
     # One FDR correction across every test in the whole study, not per deck.
     cards.benjamini_hochberg(all_effects)
+    cards.benjamini_hochberg(all_curves)
+    for cv in all_curves:
+        out[cv.archetype].setdefault("curves", []).append({
+            "card": cv.card, "zone": cv.zone, "levels": cv.levels,
+            "pilots": cv.pilots, "matches": cv.matches, "wins": cv.wins,
+            "rates": [round(r, 4) for r in cv.rates],
+            "cis": [[round(a, 4), round(b, 4)] for a, b in cv.cis],
+            "slope": round(cv.slope_per_copy, 4), "z": round(cv.z, 3),
+            "p": cv.p_value, "q": cv.q_value,
+            "deff": round(cv.design_effect, 2),
+            "mds": round(cv.min_detectable_slope, 4),
+        })
     for eff in all_effects:
         out[eff.archetype].setdefault("effects", []).append({
             "card": eff.card, "zone": eff.zone, "split": eff.split,
@@ -130,10 +154,15 @@ def main() -> int:
         })
 
     survivors = [e for e in all_effects if e.q_value < 0.10]
+    curve_hits = [c for c in all_curves if c.q_value < 0.10]
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps({
         "archetypes": out,
         "summary": {
+            "n_curves": len(all_curves),
+            "n_curves_survive_fdr": len(curve_hits),
+            "median_mds": float(sorted(c.min_detectable_slope for c in all_curves)
+                                [len(all_curves) // 2]) if all_curves else None,
             "n_tests": len(all_effects),
             "n_survive_fdr": len(survivors),
             "n_powered": sum(1 for e in all_effects if e.powered),
@@ -154,6 +183,13 @@ def main() -> int:
         print(f"    {eff.archetype:<20} {eff.card[:32]:<34} {eff.split:<12} "
               f"{eff.rate_a:.1%} vs {eff.rate_b:.1%} "
               f"(d={eff.delta:+.1%}, q={eff.q_value:.3f})")
+    print(f"\n{len(all_curves)} copy-count curves; "
+          f"{len(curve_hits)} survive FDR q<0.10")
+    for cv in sorted(curve_hits, key=lambda c: c.q_value)[:12]:
+        pts = " ".join(f"{lv}x:{r:.0%}(n{m})" for lv, r, m
+                       in zip(cv.levels, cv.rates, cv.matches))
+        print(f"    {cv.archetype:<18} {cv.card[:26]:<28} "
+              f"slope={cv.slope_per_copy:+.1%}/copy q={cv.q_value:.3f}  {pts}")
     print(f"\nwrote {args.out}")
     return 0
 

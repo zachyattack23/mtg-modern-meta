@@ -1,0 +1,137 @@
+[
+  {
+    "id": 421360,
+    "date": "2026-05-31",
+    "slug": "uper-unday-rcq-modern-scg-con-washington-dc-sunday-1000-am",
+    "name": "$uper $unday RCQ - Modern - SCG CON Washington DC - Sunday - 10:00 am",
+    "swiss_rounds": 6,
+    "players": 200,
+    "ok": true
+  },
+  {
+    "id": 421364,
+    "date": "2026-05-30",
+    "slug": "recq-modern-scg-con-washington-dc-saturday-200-pm",
+    "name": "ReCQ - Modern - SCG CON Washington DC - Saturday - 2:00 pm",
+    "swiss_rounds": 5,
+    "players": 101,
+    "ok": true
+  },
+  {
+    "id": 421362,
+    "date": "2026-05-30",
+    "slug": "recq-modern-scg-con-washington-dc-saturday-1200-pm",
+    "name": "ReCQ - Modern - SCG CON Washington DC - Saturday - 12:00 pm",
+    "swiss_rounds": 5,
+    "players": 94,
+    "ok": true
+  },
+  {
+    "id": 421365,
+    "date": "2026-05-30",
+    "slug": "recq-modern-scg-con-washington-dc-saturday-400-pm",
+    "name": "ReCQ - Modern - SCG CON Washington DC - Saturday - 4:00 pm",
+    "swiss_rounds": 5,
+    "players": 92,
+    "ok": true
+  },
+  {
+    "id": 421583,
+    "date": "2026-05-29",
+    "slug": "1k-modern-rcq-scg-con-washington-dc-friday-1000-am",
+    "name": "$1K Modern RCQ - SCG CON Washington DC - Friday - 10:00 am",
+    "swiss_rounds": 7,
+    "players": 76,
+    "ok": true
+  },
+  {
+    "id": 427426,
+    "date": "2026-05-24",
+    "slug": "mtg-sea-championships-malaysia-open-2026-27-round-1-modern",
+    "name": "MTG SEA Championships Malaysia Open 2026-27 Round 1",
+    "swiss_rounds": 7,
+    "players": 69,
+    "ok": true
+  },
+  {
+    "id": 421366,
+    "date": "2026-05-31",
+    "slug": "recq-modern-scg-con-washington-dc-sunday-100-pm",
+    "name": "ReCQ - Modern - SCG CON Washington DC - Sunday - 1:00 pm",
+    "swiss_rounds": 5,
+    "players": 65,
+    "ok": true
+  },
+  {
+    "id": 415728,
+    "date": "2026-05-30",
+    "slug": "paragon-gaming-modern-rcq",
+    "name": "Paragon Gaming Modern RCQ",
+    "swiss_rounds": 5,
+    "players": 31,
+    "ok": true
+  },
+  {
+    "id": 430565,
+    "date": "2026-05-25",
+    "slug": "4o-torneio-15a-liga-arena-guardians-modern",
+    "name": "4º Torneio - 15ª Liga Arena Guardians",
+    "swiss_rounds": 5,
+    "players": 18,
+    "ok": true
+  },
+  {
+    "id": 420211,
+    "date": "2026-05-31",
+    "slug": "us-rcq-2026-27-round-1-modern",
+    "name": "US RCQ | 2026-27 Round 1 Modern",
+    "swiss_rounds": 5,
+    "players": 18,
+    "ok": true
+  },
+  {
+    "id": 427826,
+    "date": "2026-05-27",
+    "slug": "mont-weekly-modern",
+    "name": "Mont Weekly Modern",
+    "swiss_rounds": 4,
+    "players": 15,
+    "ok": true
+  },
+  {
+    "id": 424126,
+    "date": "2026-05-31",
+    "slug": "5o-torneio-super-modern",
+    "name": "5º Torneio Super Modern",
+    "swiss_rounds": 5,
+    "players": 14,
+    "ok": true
+  },
+  {
+    "id": 430906,
+    "date": "2026-05-23",
+    "slug": "vault-509-trading-card-shop-modern-rcq",
+    "name": "Vault 509 Trading Card Shop Modern RCQ",
+    "swiss_rounds": 7,
+    "players": 13,
+    "ok": true
+  },
+  {
+    "id": 430075,
+    "date": "2026-05-23",
+    "slug": "rcq-modern",
+    "name": "RCQ - Modern",
+    "swiss_rounds": 2,
+    "players": 4,
+    "ok": true
+  },
+  {
+    "id": 423720,
+    "date": "2026-05-30",
+    "slug": "modern-rcq",
+    "name": "Modern RCQ",
+    "swiss_rounds": 4,
+    "players": 0,
+    "ok": true
+  }
+]

@@ -6,10 +6,14 @@ as distinct from its average across everyone who sleeved it up.
 
 Dashboard: https://claude.ai/artifact/TEvEvpbmYqkEkFECAqwTGj
 
+**Scope**: 17 Modern events of 100+ players, 2026-05-24 to 2026-09-20 — 8,368 deck
+entries, 17,914 swiss matches. The window opens at the Phlage ban (18 May 2026).
+
 ## Quick start
 
 ```bash
-python3 scripts/fetch_tournaments.py --config tournaments.json   # ~5 min cold
+python3 scripts/discover_tournaments.py --since 2026-05-18       # find new events
+python3 scripts/fetch_tournaments.py --config tournaments.json   # ~15 min cold
 python3 scripts/mine_archetypes.py                               # signature report
 python3 scripts/build_dataset.py                                 # classify + stats
 python3 scripts/build_cards.py                                   # flex slots
@@ -49,11 +53,29 @@ and reports the P90 of the *latent* pilot-skill distribution. On simulated data
 where the truth is known the naive version overstates by 8-12 points; on this
 data it overstates by 13-16.
 
-**3. Card-choice effects are unmeasurable at this sample size.** Of 637 card
+**3. Card-choice effects are unmeasurable at this sample size.** Of 828 with/without
 tests, **zero** had the power to detect a 4-point effect; the median detectable
-effect is 13.4%. The flex-slot map (which slots pilots disagree on) is the
-trustworthy output. The win-rate splits are a screen for implausibly large
-effects, which usually turn out to be build splits rather than card choices.
+effect is 12%. Of 496 copy-count curves (Cochran-Armitage trend over 0..4 copies,
+with a design-effect correction for matches clustered within pilots), **none**
+survive FDR.
+
+That is a result, not a shrug. Going from 4 events to 17 *removed* most of the
+effects that looked significant in the smaller sample -- they were false
+positives. The flex-slot map (which slots pilots disagree on) is the trustworthy
+output.
+
+## Two choices that move the numbers
+
+**Event tier.** Events under 100 players are excluded. Pooling 40-player local
+RCQs barely moves win rates but inflates every *ceiling* by ~4 points, because a
+wider pilot pool reads as a wider latent skill spread. Those 72 small events
+carried only 19% of the matches. Override with `--min-event-players`.
+
+**Recency.** Matches decay on a 60-day half-life, then weights are renormalised
+to mean 1. Without the renormalisation, uniformly smaller weights read as less
+evidence, drive kappa up and compress every ceiling for a purely arithmetic
+reason (halving all weights moved kappa 41 -> 140 in testing). Override with
+`--half-life 0` to disable.
 
 ## Layout
 

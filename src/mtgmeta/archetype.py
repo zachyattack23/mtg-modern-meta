@@ -177,9 +177,16 @@ def mine_signatures(decks: list[dict], *, min_cluster: int = 4,
 class Rule:
     """One archetype test.
 
-    `all_of`  -- every card must be present at >= the given count
-    `any_of`  -- at least `any_min` of these cards present
-    `none_of` -- none of these may be present (used to split near-twins)
+    `all_of`     -- every card must be present at >= the given count
+    `any_of`     -- at least `any_min` of these cards present
+    `any_groups` -- several independent any-of tests, each {cards, min}; ALL
+                    groups must pass
+    `none_of`    -- none of these may be present (used to split near-twins)
+
+    `any_groups` exists because colour variants need two unrelated tests at
+    once: a deck is Jeskai Blink if it plays a blink payoff (one group) AND a
+    red source (another group). A single `any_of` list would let a red source
+    alone satisfy the rule.
 
     Counts are maindeck+sideboard unless `main_only` is set, because some
     archetypes are identified by a sideboard package.
@@ -189,6 +196,7 @@ class Rule:
     all_of: dict[str, int] = field(default_factory=dict)
     any_of: list[str] = field(default_factory=list)
     any_min: int = 1
+    any_groups: list[dict] = field(default_factory=list)
     none_of: list[str] = field(default_factory=list)
     main_only: bool = True
     priority: int = 100
@@ -203,10 +211,20 @@ class Rule:
             hits = sum(1 for card in self.any_of if pool.get(card, 0) > 0)
             if hits < self.any_min:
                 return False
+        for group in self.any_groups:
+            hits = sum(1 for card in group["cards"] if pool.get(card, 0) > 0)
+            if hits < group.get("min", 1):
+                return False
         for card in self.none_of:
             if pool.get(card, 0) > 0:
                 return False
         return True
+
+    @property
+    def specificity(self) -> int:
+        """How many card conditions this rule imposes, for tie-breaking."""
+        return (len(self.all_of) + len(self.any_of)
+                + sum(len(g["cards"]) for g in self.any_groups) + len(self.none_of))
 
 
 def _merge(main: dict[str, int], side: dict[str, int]) -> dict[str, int]:
@@ -229,7 +247,7 @@ class Ruleset:
         rules = [Rule(**entry) for entry in raw["rules"]]
         # Most specific first; ties broken by how many cards a rule demands so
         # that a narrow combo rule beats a broad colour-ish one.
-        rules.sort(key=lambda r: (r.priority, -len(r.all_of), -len(r.any_of)))
+        rules.sort(key=lambda r: (r.priority, -r.specificity))
         return cls(rules=rules)
 
     def classify(self, main: dict[str, int],

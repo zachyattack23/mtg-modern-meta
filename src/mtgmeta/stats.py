@@ -32,6 +32,7 @@ This data cannot separate those two.
 from __future__ import annotations
 
 import collections
+import datetime
 import math
 from dataclasses import dataclass, field
 
@@ -42,6 +43,61 @@ from scipy import optimize, special, stats
 # rather than counted as half a win, which keeps the likelihood integral.
 DRAW_POLICY = "drop"
 
+# Recency. Within one format people keep adapting, so an August match is weaker
+# evidence about today than a September one. Weight decays exponentially with
+# age; half_life_days=None disables it entirely.
+#
+# The cost is real: down-weighting is equivalent to throwing away sample size,
+# which is the exact resource the ceiling model is short of. Every weighted
+# figure therefore carries an effective sample size, (sum w)^2 / sum w^2, so
+# the price is visible rather than hidden.
+DEFAULT_HALF_LIFE_DAYS = 60.0
+
+
+def recency_weight(date: str | None, reference: str,
+                   half_life_days: float | None) -> float:
+    """exp(-ln2 * age / half_life). Returns 1.0 when decay is off."""
+    if not half_life_days or not date:
+        return 1.0
+    try:
+        d0 = datetime.date.fromisoformat(date)
+        d1 = datetime.date.fromisoformat(reference)
+    except ValueError:
+        return 1.0
+    age = max((d1 - d0).days, 0)
+    return float(math.exp(-math.log(2.0) * age / half_life_days))
+
+
+def normalize_weights(matches: list["MatchRecord"]) -> None:
+    """Rescale weights in place so their mean is 1.
+
+    Without this, decay shrinks every weight below 1 and the beta-binomial
+    reads the whole dataset as less evidence -- which drives kappa up and
+    quietly compresses every deck's spread toward its mean. Halving all weights
+    in a test moved kappa from 41 to 140 while leaving mu untouched, so the
+    ceilings would have flattened for a purely artificial reason.
+
+    Normalising keeps recency as a statement about *relative* emphasis, which
+    is what was intended, and leaves the honest precision loss to be reported
+    through `effective_n` and the intervals rather than smuggled into kappa.
+    """
+    if not matches:
+        return
+    total = sum(m.weight for m in matches)
+    if total <= 0:
+        return
+    scale = len(matches) / total
+    for m in matches:
+        m.weight *= scale
+
+
+def effective_n(weights) -> float:
+    """Kish effective sample size: (sum w)^2 / sum w^2."""
+    w = np.asarray(list(weights), dtype=float)
+    if w.size == 0 or not w.any():
+        return 0.0
+    return float(w.sum() ** 2 / np.square(w).sum())
+
 
 # --------------------------------------------------------------------------
 # Match records
@@ -50,6 +106,8 @@ DRAW_POLICY = "drop"
 @dataclass
 class MatchRecord:
     tournament_id: int
+    tournament_date: str | None
+    weight: float
     round_name: str
     is_swiss: bool
     player_a: int
@@ -66,12 +124,15 @@ class MatchRecord:
 
 
 def extract_matches(tournament: dict, archetype_of: dict[str, str],
-                    swiss_only: bool = True) -> list[MatchRecord]:
+                    swiss_only: bool = True, *, reference_date: str | None = None,
+                    half_life_days: float | None = None) -> list[MatchRecord]:
     """Flatten a fetched tournament into two-sided match records.
 
     Byes and single-competitor rows are dropped: they carry no matchup
     information and would inflate the win rate of whichever decks got them.
     """
+    reference = reference_date or datetime.date.today().isoformat()
+    weight = recency_weight(tournament.get("start_date"), reference, half_life_days)
     out: list[MatchRecord] = []
     for rnd in tournament["rounds"]:
         if swiss_only and not rnd["is_swiss"]:
@@ -102,6 +163,8 @@ def extract_matches(tournament: dict, archetype_of: dict[str, str],
 
             out.append(MatchRecord(
                 tournament_id=tournament["tournament_id"],
+                tournament_date=tournament.get("start_date"),
+                weight=weight,
                 round_name=rnd["round_name"], is_swiss=rnd["is_swiss"],
                 player_a=pa, player_b=pb, deck_a=da, deck_b=db,
                 game_wins_a=ga, game_wins_b=gb, is_draw=is_draw,
@@ -115,52 +178,74 @@ def extract_matches(tournament: dict, archetype_of: dict[str, str],
 
 def deck_win_rates(matches: list[MatchRecord],
                    exclude_mirrors: bool = True) -> dict[str, dict]:
-    """Match- and game-level win rates per deck.
+    """Match- and game-level win rates per deck, weighted and raw.
 
     Mirrors are excluded by default. A mirror is 50% by construction, so
     including them drags every deck toward 0.5 in proportion to its own
     metagame share -- which penalises exactly the popular decks whose numbers
     we trust most.
+
+    Both the recency-weighted rate and the raw one are returned, because the
+    difference between them is itself informative: a deck whose weighted rate
+    sits well above its raw rate is on the way up.
     """
-    agg: dict[str, dict[str, int]] = collections.defaultdict(
-        lambda: {"w": 0, "l": 0, "d": 0, "gw": 0, "gl": 0})
+    agg: dict[str, dict[str, float]] = collections.defaultdict(
+        lambda: {"w": 0.0, "l": 0.0, "d": 0.0, "gw": 0.0, "gl": 0.0,
+                 "rw": 0, "rl": 0, "rd": 0, "rgw": 0, "rgl": 0})
+    weights: dict[str, list[float]] = collections.defaultdict(list)
 
     for m in matches:
         if exclude_mirrors and m.is_mirror:
             continue
-        for deck, opp_deck, gw, gl in (
-            (m.deck_a, m.deck_b, m.game_wins_a, m.game_wins_b),
-            (m.deck_b, m.deck_a, m.game_wins_b, m.game_wins_a),
-        ):
+        for deck, gw, gl in ((m.deck_a, m.game_wins_a, m.game_wins_b),
+                             (m.deck_b, m.game_wins_b, m.game_wins_a)):
             row = agg[deck]
-            row["gw"] += gw
-            row["gl"] += gl
+            weights[deck].append(m.weight)
+            row["gw"] += gw * m.weight
+            row["gl"] += gl * m.weight
+            row["rgw"] += gw
+            row["rgl"] += gl
             if m.is_draw:
-                row["d"] += 1
+                row["d"] += m.weight
+                row["rd"] += 1
             elif gw > gl:
-                row["w"] += 1
+                row["w"] += m.weight
+                row["rw"] += 1
             else:
-                row["l"] += 1
+                row["l"] += m.weight
+                row["rl"] += 1
 
     out: dict[str, dict] = {}
     for deck, row in agg.items():
         decided = row["w"] + row["l"]
+        raw_decided = row["rw"] + row["rl"]
         games = row["gw"] + row["gl"]
+        raw_games = row["rgw"] + row["rgl"]
         out[deck] = {
-            "matches": decided + row["d"],
-            "wins": row["w"], "losses": row["l"], "draws": row["d"],
+            "matches": row["rw"] + row["rl"] + row["rd"],
+            "wins": row["rw"], "losses": row["rl"], "draws": row["rd"],
             "match_win_rate": row["w"] / decided if decided else float("nan"),
-            "game_wins": row["gw"], "game_losses": row["gl"],
+            "raw_win_rate": row["rw"] / raw_decided if raw_decided else float("nan"),
+            "game_wins": row["rgw"], "game_losses": row["rgl"],
             "game_win_rate": row["gw"] / games if games else float("nan"),
+            "raw_game_win_rate": row["rgw"] / raw_games if raw_games else float("nan"),
+            "effective_matches": effective_n(weights[deck]),
         }
     return out
 
 
 def matchup_matrix(matches: list[MatchRecord],
                    decks: list[str]) -> dict[tuple[str, str], dict]:
-    """Head-to-head record for every ordered deck pair, including mirrors."""
-    cells: dict[tuple[str, str], dict[str, int]] = collections.defaultdict(
-        lambda: {"w": 0, "l": 0, "d": 0, "gw": 0, "gl": 0})
+    """Head-to-head record for every ordered deck pair, including mirrors.
+
+    The reported rate is recency-weighted; the interval is computed on the
+    effective sample size, so down-weighted evidence widens the interval
+    instead of quietly counting as much as fresh evidence.
+    """
+    cells: dict[tuple[str, str], dict[str, float]] = collections.defaultdict(
+        lambda: {"w": 0.0, "l": 0.0, "d": 0.0, "rw": 0, "rl": 0, "rd": 0,
+                 "gw": 0.0, "gl": 0.0})
+    weights: dict[tuple[str, str], list[float]] = collections.defaultdict(list)
     wanted = set(decks)
 
     for m in matches:
@@ -171,36 +256,45 @@ def matchup_matrix(matches: list[MatchRecord],
             (m.deck_b, m.deck_a, m.game_wins_b, m.game_wins_a),
         ):
             cell = cells[(deck, opp)]
-            cell["gw"] += gw
-            cell["gl"] += gl
+            weights[(deck, opp)].append(m.weight)
+            cell["gw"] += gw * m.weight
+            cell["gl"] += gl * m.weight
             if m.is_draw:
-                cell["d"] += 1
+                cell["d"] += m.weight
+                cell["rd"] += 1
             elif gw > gl:
-                cell["w"] += 1
+                cell["w"] += m.weight
+                cell["rw"] += 1
             else:
-                cell["l"] += 1
+                cell["l"] += m.weight
+                cell["rl"] += 1
 
     out: dict[tuple[str, str], dict] = {}
     for key, cell in cells.items():
         decided = cell["w"] + cell["l"]
+        raw_decided = cell["rw"] + cell["rl"]
+        rate = cell["w"] / decided if decided else float("nan")
+        eff = effective_n(weights[key])
+        # Wilson on the effective n, with the weighted rate as the centre.
+        eff_decided = eff * (raw_decided / max(raw_decided + cell["rd"], 1))
+        lo, hi = wilson(rate * eff_decided, eff_decided)
         games = cell["gw"] + cell["gl"]
-        # Wilson interval, because most cells are small and a bare ratio
-        # invites reading 3-0 as a 100% matchup.
-        lo, hi = wilson(cell["w"], decided)
         out[key] = {
-            "matches": decided + cell["d"],
-            "wins": cell["w"], "losses": cell["l"], "draws": cell["d"],
-            "win_rate": cell["w"] / decided if decided else float("nan"),
+            "matches": raw_decided + cell["rd"],
+            "wins": cell["rw"], "losses": cell["rl"], "draws": cell["rd"],
+            "win_rate": rate,
+            "raw_win_rate": cell["rw"] / raw_decided if raw_decided else float("nan"),
             "ci_low": lo, "ci_high": hi,
+            "effective_matches": eff,
             "game_win_rate": cell["gw"] / games if games else float("nan"),
-            "games": games,
+            "games": int(cell["gw"] + cell["gl"]),
         }
     return out
 
 
-def wilson(wins: int, n: int, z: float = 1.96) -> tuple[float, float]:
+def wilson(wins: float, n: float, z: float = 1.96) -> tuple[float, float]:
     """Wilson score interval; degrades gracefully at n = 0 and at 0%/100%."""
-    if n == 0:
+    if n <= 0:
         return (float("nan"), float("nan"))
     p = wins / n
     denom = 1 + z * z / n
@@ -275,6 +369,7 @@ class DeckSpread:
     mu_ci: tuple[float, float] = (float("nan"), float("nan"))
     ceiling_ci: tuple[float, float] = (float("nan"), float("nan"))
     skill_expression: float = float("nan")  # spread relative to the field's
+    effective_matches: float = float("nan")  # Kish n after recency weighting
 
 
 def fit_global_kappa(pilot_records: dict[str, list[tuple[int, int]]]
@@ -294,14 +389,20 @@ def fit_global_kappa(pilot_records: dict[str, list[tuple[int, int]]]
 
 def pilot_records(matches: list[MatchRecord],
                   exclude_mirrors: bool = True
-                  ) -> dict[str, dict[int, tuple[int, int]]]:
-    """{deck: {player_id: (wins, decided_matches)}} for the beta-binomial.
+                  ) -> dict[str, dict[int, tuple[float, float, int]]]:
+    """{deck: {player_id: (weighted_wins, weighted_matches, raw_matches)}}.
 
     A player who switched decks between events is counted separately per deck,
     which is what we want: the unit of analysis is a pilot-deck pairing.
+
+    Weighted counts are real-valued, which the beta-binomial marginal
+    likelihood handles without modification -- betaln is defined on the reals,
+    so a down-weighted pilot simply contributes less evidence. The raw match
+    count rides along so that inclusion thresholds stay honest: a pilot is kept
+    or dropped on how many games they actually played, not on how old they are.
     """
-    agg: dict[str, dict[int, list[int]]] = collections.defaultdict(
-        lambda: collections.defaultdict(lambda: [0, 0]))
+    agg: dict[str, dict[int, list[float]]] = collections.defaultdict(
+        lambda: collections.defaultdict(lambda: [0.0, 0.0, 0]))
 
     for m in matches:
         if exclude_mirrors and m.is_mirror:
@@ -313,11 +414,12 @@ def pilot_records(matches: list[MatchRecord],
             (m.deck_b, m.player_b, m.game_wins_b, m.game_wins_a),
         ):
             rec = agg[deck][player]
-            rec[1] += 1
+            rec[1] += m.weight
+            rec[2] += 1
             if gw > gl:
-                rec[0] += 1
+                rec[0] += m.weight
 
-    return {deck: {p: (r[0], r[1]) for p, r in players.items()}
+    return {deck: {p: (r[0], r[1], int(r[2])) for p, r in players.items()}
             for deck, players in agg.items()}
 
 
@@ -329,7 +431,7 @@ def deck_spreads(matches: list[MatchRecord], *, min_pilots: int = 5,
     records = pilot_records(matches)
 
     # Global prior: how much do pilots vary across the whole field?
-    flat = {d: list(v.values()) for d, v in records.items()}
+    flat = {d: [(w, n) for w, n, _ in v.values()] for d, v in records.items()}
     mu_global, kappa_global = fit_global_kappa(flat)
     log_kappa_prior = (math.log(kappa_global), kappa_sd)
 
@@ -337,12 +439,15 @@ def deck_spreads(matches: list[MatchRecord], *, min_pilots: int = 5,
 
     out: list[DeckSpread] = []
     for deck, players in records.items():
-        usable = [(w, n) for w, n in players.values()
-                  if n >= min_matches_per_pilot]
+        # Threshold on raw matches played, then fit on the weighted counts.
+        usable = [(w, n) for w, n, raw in players.values()
+                  if raw >= min_matches_per_pilot and n > 0]
         if len(usable) < min_pilots:
             continue
         wins = np.array([w for w, _ in usable], dtype=float)
         trials = np.array([n for _, n in usable], dtype=float)
+        raw_total = sum(raw for _, _, raw in players.values()
+                        if raw >= min_matches_per_pilot)
 
         mu, kappa = fit_beta_binomial(wins, trials, kappa_prior=log_kappa_prior)
         a, b = mu * kappa, (1 - mu) * kappa
@@ -365,7 +470,8 @@ def deck_spreads(matches: list[MatchRecord], *, min_pilots: int = 5,
         out.append(DeckSpread(
             deck=deck,
             n_pilots=len(usable),
-            n_matches=int(trials.sum()),
+            n_matches=int(raw_total),
+            effective_matches=float(trials.sum()),
             observed_mean=float(wins.sum() / trials.sum()),
             observed_p90=float(np.quantile(obs, 0.90)),
             mu=mu, kappa=kappa,

@@ -293,6 +293,30 @@ select {
 .dist .col .b { width: 100%; border-radius: 2px 2px 0 0; background: var(--bar-fill); min-height: 1px; }
 .dist .col .b.zero { background: var(--rule-strong); }
 .dist .col .lab { font-size: 9.5px; color: var(--ink-3); font-family: "IBM Plex Mono", monospace; }
+.curve { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--rule); }
+.curve h5 { font-size: 10px; text-transform: uppercase; letter-spacing: .07em;
+            color: var(--ink-3); margin: 0 0 7px; font-weight: 600; }
+.curve-plot { position: relative; height: 104px; margin: 4px 0 26px;
+              padding-left: 26px; display: flex; gap: 6px; }
+.cc { flex: 1; position: relative; }
+.cc .band { width: 62%; background: var(--bar-fill); border-radius: 3px;
+            position: absolute; left: 19%; opacity: .5; min-height: 2px; }
+.cc .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--bar-edge);
+           position: absolute; left: calc(50% - 4px); z-index: 3;
+           box-shadow: 0 0 0 2px var(--surface); }
+.cc .lab { font-size: 9.5px; color: var(--ink-3); line-height: 1.25; text-align: center;
+           font-family: "IBM Plex Mono", monospace; position: absolute;
+           bottom: -25px; left: 0; right: 0; }
+.cc .val { font-size: 10px; color: var(--ink-2); font-weight: 500; text-align: center;
+           font-family: "IBM Plex Mono", monospace; position: absolute;
+           left: 0; right: 0; z-index: 4; transform: translateY(-15px); }
+.curve-grid { position: absolute; left: 26px; right: 0; height: 1px;
+              background: var(--rule); z-index: 0; }
+.curve-grid.mid { background: var(--rule-strong); }
+.curve-ax { position: absolute; left: 0; width: 22px; text-align: right;
+            font-size: 9px; color: var(--ink-3); font-family: "IBM Plex Mono", monospace;
+            transform: translateY(-50%); z-index: 1; }
+.curve-foot { font-size: 11px; color: var(--ink-3); margin-top: 16px; }
 .effect { font-size: 12px; margin-top: 9px; padding-top: 9px; border-top: 1px dashed var(--rule); color: var(--ink-2); }
 .effect .d { font-weight: 600; font-variant-numeric: tabular-nums; }
 .effect .warn { color: var(--ink-3); font-size: 11px; display: block; margin-top: 3px; }
@@ -310,7 +334,7 @@ footer p { max-width: 76ch; }
 
 <header class="top">
   <div class="wrap top-inner">
-    <p class="brand">Modern Ceiling Report <em>— four events, 13,347 matches</em></p>
+    <p class="brand">Modern Ceiling Report <em>— <span id="brandStat">the post-ban format</span></em></p>
     <nav class="tabs" role="tablist">
       <button role="tab" aria-selected="true" data-tab="meta">Metagame</button>
       <button role="tab" aria-selected="false" data-tab="mat">Matchups</button>
@@ -326,6 +350,7 @@ footer p { max-width: 76ch; }
   <div class="hero" id="hero">
     <h1>What your deck does <em>in good hands</em></h1>
     <p class="lede">A deck's average win rate is a fact about <strong>everyone who sleeved it up</strong>, most of whom are not you. This report separates a deck's base rate from its <strong>ceiling</strong> — the win rate a strong pilot can expect — by modelling pilot skill instead of reading it off the leaderboard.</p>
+    <p class="lede" id="scopeLine"></p>
     <div class="events" id="events"></div>
   </div>
 
@@ -354,6 +379,7 @@ footer p { max-width: 76ch; }
           <th data-k="np">Pilots<i class="car">▾</i></th>
           <th data-k="m">Matches<i class="car">▾</i></th>
           <th data-k="w">Win %<i class="car">▾</i></th>
+          <th data-k="rw">Unwtd<i class="car">▾</i></th>
           <th class="l">95% CI</th>
           <th class="l rangecell">Floor → Ceiling</th>
           <th data-k="c">Ceiling<i class="car">▾</i></th>
@@ -388,9 +414,9 @@ footer p { max-width: 76ch; }
       <span class="hint" id="archMeta"></span>
     </div>
     <div class="callout" style="border-left-color: var(--bad); margin-top:0">
-      <h3 style="color: var(--bad)">Read the win-rate splits with suspicion</h3>
-      <p>Of <strong id="nTests">—</strong> card tests run here, <strong>zero</strong> had the sample size to detect a 4-point effect; the median detectable effect is <strong id="medMde">—</strong>. Real card choices are probably worth 1–2 points, which is <strong>unreachable at any sample size this dataset will ever have</strong>.</p>
-      <p>So the slot map above is the trustworthy artifact. Anything that does clear significance is either an enormous effect or a build split masquerading as a card choice — and stronger players converge on correct builds, so a winning card may simply be <strong>the card good players pick</strong>. Nothing here separates those.</p>
+      <h3 style="color: var(--bad)">Read the win-rate numbers with suspicion</h3>
+      <p>Of <strong id="nTests">—</strong> with/without tests, <strong>zero</strong> had the sample size to detect a 4-point effect; the median detectable effect is <strong id="medMde">—</strong>. Of <strong id="nCurves">—</strong> copy-count curves, <strong id="nCurveHits">—</strong> survive multiple-comparison correction. Real card choices are probably worth 1–2 points, which is <strong>unreachable at any sample size this dataset will ever have</strong>.</p>
+      <p>That is not a shrug — it is the result. Expanding from 4 events to <span id="nEvents">—</span> <em>removed</em> most of the effects that looked significant in the smaller sample; they were false positives. So the slot map is the trustworthy artifact. Anything that does clear significance is either an enormous effect or a build split masquerading as a card choice — and stronger players converge on correct builds, so a winning card may simply be <strong>the card good players pick</strong>. Nothing here separates those.</p>
     </div>
     <div class="slotgrid" id="slots"></div>
   </section>
@@ -417,12 +443,26 @@ footer p { max-width: 76ch; }
       </div>
       <div class="panel">
         <h4>Decisions that shape the numbers</h4>
+        <div class="kv"><span>Format window opens</span><span>Phlage ban, 18 May 2026</span></div>
+        <div class="kv"><span>Event size floor</span><span>100+ players</span></div>
+        <div class="kv"><span>Recency half-life</span><span id="mHalf">—</span></div>
+        <div class="kv"><span>Effective matches</span><span id="mEff">—</span></div>
         <div class="kv"><span>Mirrors</span><span>excluded</span></div>
         <div class="kv"><span>Draws</span><span>dropped, not half-counted</span></div>
         <div class="kv"><span>Byes &amp; forfeits</span><span>excluded</span></div>
         <div class="kv"><span>Playoff rounds</span><span>excluded (top cut only)</span></div>
         <div class="kv"><span>Unit of analysis</span><span>pilot × deck</span></div>
         <div class="kv"><span>Share counted by</span><span>deck entries, not matches</span></div>
+      </div>
+      <div class="panel">
+        <h4>Why the window starts at a ban</h4>
+        <p class="sub" style="font-size:13px">The boundary was found in the data rather than assumed. <strong>Phlage, Titan of Fire\u2019s Fury</strong> appears in 25–34% of Modern decks from January through 17 May 2026, then in <strong>0 of 28</strong> decks on 24 May and 0 of the several hundred that follow. Nothing else disappears like that.</p>
+        <p class="sub" style="font-size:13px">Everything before that line is a different format and is excluded, however much data it would have added.</p>
+      </div>
+      <div class="panel">
+        <h4>Recency and event tier</h4>
+        <p class="sub" style="font-size:13px">Matches are weighted by age on a 60-day half-life, then <strong>renormalised to mean 1</strong>. Without the renormalisation the model reads uniformly smaller weights as less evidence, drives kappa up, and compresses every ceiling for a purely arithmetic reason — in testing, halving all weights moved kappa from 41 to 140 while leaving the mean untouched.</p>
+        <p class="sub" style="font-size:13px">Events under 100 players are excluded. Pooling 40-player local RCQs barely moves the win rates but inflates every <em>ceiling</em> by about 4 points, because a wider pilot pool reads as a wider latent skill spread. Those 72 small events carried only 19% of the matches, so dropping them costs little and keeps the ceiling meaning what you want it to mean.</p>
       </div>
       <div class="panel">
         <h4>What this cannot tell you</h4>
@@ -449,8 +489,13 @@ footer p { max-width: 76ch; }
   const el = (id) => document.getElementById(id);
 
   /* ---------- events strip ---------- */
+  const TS = D.tournamentSummary;
+  el("scopeLine").innerHTML =
+    `Built from <strong>${TS.count} Modern events</strong> between ${TS.first} and ${TS.last} — `
+    + `${TS.players.toLocaleString()} deck entries and ${TS.matches.toLocaleString()} swiss matches. `
+    + `The window opens at the <strong>Phlage ban</strong>, so every match here was played under the current rules.`;
   el("events").innerHTML = D.tournaments
-    .slice().sort((a, b) => a.date.localeCompare(b.date))
+    .slice().sort((a, b) => (b.players || 0) - (a.players || 0))
     .map(t => {
       let n = t.name.replace(/\s*[-–]\s*(Saturday|Round 1).*$/i, "")
                     .replace(/™/g, "").replace(/\s+-\s+Season \d+/i, "").trim();
@@ -459,6 +504,8 @@ footer p { max-width: 76ch; }
         <div class="n">${n}</div>
         <div class="m">${t.players.toLocaleString()} players · ${t.matches.toLocaleString()} matches</div></div>`;
     }).join("");
+  el("brandStat").textContent =
+    `${TS.count} events, ${TS.matches.toLocaleString()} matches`;
 
   /* ---------- diagnostics ---------- */
   const dg = D.diagnostics;
@@ -466,9 +513,16 @@ footer p { max-width: 76ch; }
   el("dAgree").textContent = pct(dg.weak_label_agreement_rate, 1);
   el("dRescue").textContent = dg.rescued_from_autofill.toLocaleString() + " decks";
   el("dUnc").textContent = dg.unclassified + " (" + pct(dg.unclassified_pct, 1) + ")";
-  el("dNames").textContent = "332";
+  el("dNames").textContent = "700+";
   el("nTests").textContent = D.cardSummary.n_tests;
   el("medMde").textContent = pct(D.cardSummary.median_mde, 1);
+  el("nCurves").textContent = D.cardSummary.n_curves;
+  el("nCurveHits").textContent = D.cardSummary.n_curves_survive_fdr === 0
+    ? "none" : D.cardSummary.n_curves_survive_fdr;
+  el("nEvents").textContent = TS.count;
+  el("mHalf").textContent = (D.merged.halfLife || "off") + " days";
+  el("mEff").textContent = Math.round(D.merged.effectiveMatches).toLocaleString()
+    + " of " + D.merged.totalMatches.toLocaleString();
 
   /* ---------- tabs ---------- */
   const tabs = [...document.querySelectorAll("nav.tabs button")];
@@ -526,6 +580,7 @@ footer p { max-width: 76ch; }
         <td class="mono">${d.np ?? "—"}</td>
         <td class="mono">${d.m.toLocaleString()}</td>
         <td class="mono">${wr}</td>
+        <td class="mono" style="color:var(--ink-3)">${pct(d.rw)}</td>
         <td class="ci mono">${d.ci ? pct(d.ci[0], 0) + "–" + pct(d.ci[1], 0) : "—"}</td>
         <td class="rangecell">${rangeBar(d)}</td>
         <td class="mono"><strong>${pct(d.c)}</strong></td>
@@ -716,6 +771,40 @@ footer p { max-width: 76ch; }
 
     const effByCard = new Map();
     (info.effects || []).forEach(e => effByCard.set(e.z + "||" + e.c, e));
+    const curveByCard = new Map();
+    (info.curves || []).forEach(c => curveByCard.set(c.z + "||" + c.c, c));
+
+    // Win rate across the full 0..4 copy range. The window is fixed at 38-62%
+    // for every card so two slots can be compared by eye -- and deliberately
+    // not auto-scaled, which would stretch a flat, non-significant curve into
+    // something that looks like a trend.
+    const LOW = 0.38, HIGH = 0.62;
+    const y = (v) => Math.max(0, Math.min(1, (v - LOW) / (HIGH - LOW)));
+    function curveHtml(cv) {
+      if (!cv) return "";
+      const cells = cv.lv.map((lv, i) => {
+        const r = cv.r[i], ci = cv.ci[i];
+        const top = y(Math.min(ci[1], HIGH)), bot = y(Math.max(ci[0], LOW));
+        return `<div class="cc">
+          <span class="val" style="bottom:${y(r) * 100}%">${Math.round(r * 100)}</span>
+          <div class="band" style="bottom:${bot * 100}%;height:${Math.max((top - bot) * 100, 1.5)}%"></div>
+          <div class="dot" style="bottom:calc(${y(r) * 100}% - 4px)"></div>
+          <span class="lab">${lv}x<br>n=${cv.m[i]}</span></div>`;
+      }).join("");
+      const grid = [0.40, 0.50, 0.60].map(v =>
+        `<div class="curve-grid ${v === 0.5 ? "mid" : ""}" style="bottom:${y(v) * 100}%"></div>
+         <span class="curve-ax" style="bottom:${y(v) * 100}%">${Math.round(v * 100)}%</span>`).join("");
+      return `<div class="curve">
+        <h5>Win rate by copies played</h5>
+        <div class="curve-plot">${grid}${cells}</div>
+        <div class="curve-foot">
+          Slope <strong>${cv.sl >= 0 ? "+" : ""}${(cv.sl * 100).toFixed(1)} pts</strong> per copy.
+          ${cv.q < 0.10
+            ? `Survives FDR (q=${cv.q.toFixed(3)}).`
+            : `Not significant (q=${cv.q >= 1 ? "1.00" : cv.q.toFixed(2)}); this sample could only have resolved ${(cv.mds * 100).toFixed(1)} pts per copy.`}
+          Bars are 95% intervals; the line marks 50%.
+        </div></div>`;
+    }
 
     el("slots").innerHTML = info.slots.map(s => {
       const max = Math.max(...s.d);
@@ -730,6 +819,7 @@ footer p { max-width: 76ch; }
             <div class="b ${i === 0 ? "zero" : ""}" style="height:${max ? Math.max(1, v / max * 30) : 1}px"></div>
             <span class="lab">${i}</span></div>`).join("")}
         </div>
+        ${curveHtml(curveByCard.get(s.z + "||" + s.c))}
         ${eff ? `<div class="effect">
             <span class="d" style="color:${eff.d >= 0 ? "var(--good)" : "var(--bad)"}">${eff.d >= 0 ? "+" : ""}${pct(eff.d, 1)}</span>
             &nbsp;${pct(eff.ra, 1)} with vs ${pct(eff.rb, 1)} without
