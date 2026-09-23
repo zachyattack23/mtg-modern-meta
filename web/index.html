@@ -364,10 +364,11 @@ footer p { max-width: 76ch; }
   <section id="tab-meta">
     <h2>The field</h2>
     <p class="sub">Sorted by metagame share. Click any row for the pilot-by-pilot detail. The range bar shows each deck's fitted <strong>floor (P10) → mean → ceiling (P90)</strong> on a shared scale, so a wide bar means the deck's result depends heavily on who is holding it.</p>
+    <p class="sub" style="margin-top:-12px"><strong>Split</strong> lists colour variants separately — Esper, Azorius and Jeskai Blink are different decks. <strong>Merge</strong> folds them into the parent, which costs precision on the matchup but buys the sample size the ceiling model wants.</p>
     <div class="controls">
       <div class="seg" id="variantToggle">
-        <button data-v="merged" aria-pressed="true">Merge variants</button>
-        <button data-v="fine" aria-pressed="false">Split variants</button>
+        <button data-v="fine" aria-pressed="true">Split variants</button>
+        <button data-v="merged" aria-pressed="false">Merge variants</button>
       </div>
       <span class="hint" id="rowcount"></span>
     </div>
@@ -538,11 +539,18 @@ footer p { max-width: 76ch; }
   }));
 
   /* ---------- state ---------- */
-  let view = "merged";
+  let view = "fine";
   let sortKey = "s", sortDir = -1, selected = null;
 
   const decks = () => D[view].decks;
   const rankable = () => decks().filter(d => d.rk);
+
+  // How many fine-grained archetypes each parent collapses, so a merged row
+  // advertises that there is more detail behind it.
+  const variantCount = new Map();
+  D.fine.decks.forEach(d => {
+    if (d.p) variantCount.set(d.p, (variantCount.get(d.p) || 0) + 1);
+  });
 
   /* ---------- range bar scale ---------- */
   const LO = 0.28, HI = 0.62;
@@ -575,7 +583,10 @@ footer p { max-width: 76ch; }
       const wr = d.w == null ? "—"
         : `<span class="${d.ci && d.ci[0] > 0.5 ? "up" : (d.ci && d.ci[1] < 0.5 ? "dn" : "")}">${pct(d.w)}</span>`;
       return `<tr data-n="${encodeURIComponent(d.n)}" class="${un ? "dim" : ""} ${selected === d.n ? "sel" : ""}">
-        <td><div class="deckname">${d.n}${d.p ? `<span class="pill">${d.p}</span>` : ""}${un ? `<span class="pill">low n</span>` : ""}</div></td>
+        <td><div class="deckname">${d.n}${d.p ? `<span class="pill">${d.p}</span>` : ""}${
+          view === "merged" && variantCount.has(d.n)
+            ? `<span class="pill" style="background:var(--accent-soft);color:var(--accent)">${variantCount.get(d.n)} variants</span>` : ""
+        }${un ? `<span class="pill">low n</span>` : ""}</div></td>
         <td class="mono">${pct(d.s)}</td>
         <td class="mono">${d.np ?? "—"}</td>
         <td class="mono">${d.m.toLocaleString()}</td>
