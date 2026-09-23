@@ -368,7 +368,7 @@ class DeckSpread:
     spread: float                # ceiling_p90 - floor_p10
     mu_ci: tuple[float, float] = (float("nan"), float("nan"))
     ceiling_ci: tuple[float, float] = (float("nan"), float("nan"))
-    skill_expression: float = float("nan")  # spread relative to the field's
+    skill_expression: float = float("nan")  # spread relative to the MEDIAN DECK's
     effective_matches: float = float("nan")  # Kish n after recency weighting
 
 
@@ -435,8 +435,6 @@ def deck_spreads(matches: list[MatchRecord], *, min_pilots: int = 5,
     mu_global, kappa_global = fit_global_kappa(flat)
     log_kappa_prior = (math.log(kappa_global), kappa_sd)
 
-    field_spread = _beta_spread(mu_global, kappa_global)
-
     out: list[DeckSpread] = []
     for deck, players in records.items():
         # Threshold on raw matches played, then fit on the weighted counts.
@@ -477,9 +475,20 @@ def deck_spreads(matches: list[MatchRecord], *, min_pilots: int = 5,
             mu=mu, kappa=kappa,
             ceiling_p90=ceiling, floor_p10=floor, spread=ceiling - floor,
             mu_ci=_pct_ci(boot_mu), ceiling_ci=_pct_ci(boot_ceiling),
-            skill_expression=(ceiling - floor) / field_spread
-            if field_spread else float("nan"),
         ))
+
+    # Normalise skill expression against the MEDIAN DECK, not against a global
+    # beta-binomial fitted over every pilot regardless of deck. That global fit
+    # absorbs between-deck variation as well as within-deck pilot variation, so
+    # its span (13.2 pts on this data) exceeds the median deck's (10.7) and 16
+    # of 22 decks scored below 1.0 -- a column labelled "spread" where the
+    # median deck reads 0.81 tells the reader the opposite of the truth.
+    # Against the median deck, 1.0 means exactly "typical".
+    spans = [d.spread for d in out if np.isfinite(d.spread)]
+    reference = float(np.median(spans)) if spans else float("nan")
+    for entry in out:
+        entry.skill_expression = (entry.spread / reference
+                                  if reference else float("nan"))
 
     out.sort(key=lambda d: -d.ceiling_p90)
     return out

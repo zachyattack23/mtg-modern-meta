@@ -385,7 +385,7 @@ footer p { max-width: 76ch; }
           <th class="l rangecell">Floor → Ceiling</th>
           <th data-k="c">Ceiling<i class="car">▾</i></th>
           <th data-k="op">Naive<i class="car">▾</i></th>
-          <th data-k="sx">Spread<i class="car">▾</i></th>
+          <th data-k="sx">Skill expr<i class="car">▾</i></th>
         </tr></thead>
         <tbody></tbody>
       </table>
@@ -662,7 +662,7 @@ footer p { max-width: 76ch; }
           <div class="kv"><span>Mean (μ)</span><span>${pct(d.mu)}</span></div>
           <div class="kv"><span>Ceiling (P90)</span><span><strong>${pct(d.c)}</strong></span></div>
           <div class="kv"><span>Ceiling 95% CI</span><span>${d.cci && d.cci[0] != null ? pct(d.cci[0]) + "–" + pct(d.cci[1]) : "—"}</span></div>
-          <div class="kv"><span>Spread vs field</span><span>${d.sx == null ? "—" : d.sx.toFixed(2) + "×"}</span></div>
+          <div class="kv"><span>Skill expression (1.0 = typical deck)</span><span>${d.sx == null ? "—" : d.sx.toFixed(2) + "×"}</span></div>
           <div class="kv"><span>Naive observed P90</span><span style="color:var(--ink-3)">${pct(d.op)}</span></div>
         </div>
         <div class="panel">
