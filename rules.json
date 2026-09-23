@@ -1,0 +1,447 @@
+{
+  "_comment": [
+    "Archetype rules, derived from the card signatures mined out of the fetched",
+    "decklists (scripts/mine_archetypes.py), not from a remembered metagame.",
+    "",
+    "Rules are evaluated in ascending `priority`, first match wins, so the",
+    "specific combo decks are tested before the broad ones. That ordering is",
+    "what keeps decks with shared pieces apart: Broodscale before Eldrazi",
+    "(Broodscale lists also run Emrakul and Sowing Mycospawn), Goryo's before",
+    "Blink (both run Ephemerate and Prismatic Ending), Prowess before Burn.",
+    "",
+    "`parent` groups variants into a family for the dashboard's merge toggle.",
+    "Edit freely -- this file is the classifier."
+  ],
+  "rules": [
+    {
+      "name": "Tameshi Belcher",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Goblin Charbelcher": 1,
+        "Tameshi, Reality Architect": 1
+      },
+      "notes": "100% inclusion of both, lift >300"
+    },
+    {
+      "name": "Amulet Titan",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Amulet of Vigor": 1
+      },
+      "any_of": [
+        "Spelunking",
+        "Primeval Titan",
+        "Cultivator Colossus"
+      ],
+      "notes": "Amulet of Vigor 94% in / 0% out"
+    },
+    {
+      "name": "Neoform",
+      "parent": null,
+      "priority": 5,
+      "any_of": [
+        "Neoform",
+        "Allosaurus Rider",
+        "Eldritch Evolution"
+      ],
+      "any_min": 2,
+      "notes": "all three at ~100% inclusion, lift >250"
+    },
+    {
+      "name": "Ruby Storm",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Ruby Medallion": 1
+      },
+      "any_of": [
+        "Past in Flames",
+        "Wrenn's Resolve",
+        "Grapeshot"
+      ],
+      "notes": "Ruby Medallion 98% in / 1% out"
+    },
+    {
+      "name": "Devoted Druid",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Devoted Druid": 1,
+        "Vizier of Remedies": 1
+      },
+      "notes": "99% both, lift >300"
+    },
+    {
+      "name": "Living End",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Living End": 1
+      },
+      "notes": "96% in / 0% out"
+    },
+    {
+      "name": "Necrodominance",
+      "parent": null,
+      "priority": 5,
+      "any_of": [
+        "Necrodominance",
+        "Soul Spike"
+      ],
+      "notes": "lift ~1000-1500"
+    },
+    {
+      "name": "Mill",
+      "parent": null,
+      "priority": 5,
+      "any_of": [
+        "Archive Trap",
+        "Fractured Sanity",
+        "Ruin Crab",
+        "Hedron Crab"
+      ],
+      "any_min": 2,
+      "notes": "lift >380 each"
+    },
+    {
+      "name": "Birthing Ritual",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Birthing Ritual": 1
+      },
+      "notes": "100% inclusion; shares Shardless/Subtlety with Living End so must precede it"
+    },
+    {
+      "name": "Hollow One",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Hollow One": 1
+      },
+      "any_of": [
+        "Burning Inquiry",
+        "Marauding Mako"
+      ],
+      "notes": "lift >500"
+    },
+    {
+      "name": "Loki",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Loki, God of Mischief": 1
+      },
+      "notes": "shares Skateboard/Metallic Rebuke/Mox Opal with Affinity, so precedes it"
+    },
+    {
+      "name": "Domain Zoo",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Territorial Kavu": 1
+      },
+      "any_of": [
+        "Scion of Draco",
+        "Leyline of the Guildpact"
+      ],
+      "notes": "lift >240"
+    },
+    {
+      "name": "Boros Land Destruction",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Cleansing Wildfire": 1
+      },
+      "any_of": [
+        "Price of Freedom",
+        "Avengers Disassembled",
+        "Demolition Field"
+      ],
+      "notes": "lift >170"
+    },
+    {
+      "name": "Broodscale",
+      "parent": null,
+      "priority": 10,
+      "all_of": {
+        "Basking Broodscale": 1
+      },
+      "any_of": [
+        "Blade of the Bloodchief",
+        "Glaring Fleshraker"
+      ],
+      "notes": "99%/1%. Must precede Eldrazi: these lists also run Emrakul + Sowing Mycospawn"
+    },
+    {
+      "name": "Goryo's Vengeance",
+      "parent": null,
+      "priority": 10,
+      "all_of": {
+        "Goryo's Vengeance": 1
+      },
+      "notes": "98%/1%. Must precede Blink: shares Ephemerate, Prismatic Ending, Godless Shrine"
+    },
+    {
+      "name": "Affinity",
+      "parent": null,
+      "priority": 10,
+      "any_of": [
+        "Kappa Cannoneer",
+        "Claws of Gix",
+        "Pinnacle Emissary",
+        "Weapons Manufacturing"
+      ],
+      "any_min": 2,
+      "notes": "lift >380; Loki rule runs first to claim the Mox Opal shells"
+    },
+    {
+      "name": "Eldrazi Tron",
+      "parent": "Tron",
+      "priority": 20,
+      "all_of": {
+        "Urza's Tower": 1,
+        "Thought-Knot Seer": 1
+      },
+      "notes": "Thought-Knot 90% here vs 17% in green Tron; also Mind Stone + Chalice"
+    },
+    {
+      "name": "Green Tron",
+      "parent": "Tron",
+      "priority": 21,
+      "all_of": {
+        "Urza's Tower": 1
+      },
+      "any_of": [
+        "Sowing Mycospawn",
+        "Giant's Boulder",
+        "Forest"
+      ],
+      "none_of": [
+        "Thought-Knot Seer"
+      ],
+      "notes": "genuinely distinct from Eldrazi Tron: Forest 78% vs 21%, Sowing 78% vs 20%"
+    },
+    {
+      "name": "Eldrazi Trudge",
+      "parent": null,
+      "priority": 30,
+      "any_of": [
+        "Slumbering Trudge",
+        "Fight Rigging",
+        "Fanatic of Rhonas",
+        "Drowner of Truth // Drowned Jungle"
+      ],
+      "any_min": 2,
+      "notes": "the 'eldrazi' and 'eldrazi trudge' player labels are one deck -- no card separates them at >45pp"
+    },
+    {
+      "name": "Reanimator",
+      "parent": null,
+      "priority": 30,
+      "all_of": {
+        "Archon of Cruelty": 1
+      },
+      "any_of": [
+        "Persist",
+        "Unearth",
+        "Faithless Looting"
+      ],
+      "notes": "lift >230"
+    },
+    {
+      "name": "Blink",
+      "parent": null,
+      "priority": 39,
+      "any_of": [
+        "Flickerwisp",
+        "Phelia, Exuberant Shepherd",
+        "Overlord of the Balemurk",
+        "Emperor of Bones",
+        "Ephemerate",
+        "Witch Enchanter // Witch-Blessed Meadow"
+      ],
+      "any_min": 2,
+      "notes": "runs after Goryo's, which shares the shell. Ephemerate/Witch Enchanter added so the Azorius build is not stolen by Boros Energy, which it overlaps on Guide of Souls + Ocelot Pride despite playing no red."
+    },
+    {
+      "name": "Boros Energy",
+      "parent": null,
+      "priority": 40,
+      "any_of": [
+        "Guide of Souls",
+        "Goblin Bombardment",
+        "Ajani, Nacatl Pariah // Ajani, Nacatl Avenger",
+        "Galvanic Discharge",
+        "Ragavan, Nimble Pilferer"
+      ],
+      "any_min": 2,
+      "notes": "tightened: needs two energy payoffs beyond Ocelot Pride, so white Blink lists fall through to the Blink rule",
+      "all_of": {
+        "Ocelot Pride": 1
+      }
+    },
+    {
+      "name": "Izzet Prowess",
+      "parent": null,
+      "priority": 40,
+      "all_of": {
+        "Cori-Steel Cutter": 1
+      },
+      "any_of": [
+        "Dragon's Rage Channeler",
+        "Slickshot Show-Off",
+        "Monastery Swiftspear"
+      ],
+      "notes": "Cori-Steel Cutter 99%/2%; precedes Burn, which shares Swiftspear + Bolt"
+    },
+    {
+      "name": "Burn",
+      "parent": null,
+      "priority": 50,
+      "all_of": {
+        "Lava Spike": 1
+      },
+      "none_of": [
+        "Cori-Steel Cutter"
+      ],
+      "notes": "Lava Spike 71% in / 0% out; the none_of keeps Prowess lists out"
+    },
+    {
+      "name": "Samwise Combo",
+      "parent": null,
+      "priority": 4,
+      "all_of": {
+        "Samwise Gamgee": 1,
+        "Cauldron Familiar": 1
+      },
+      "notes": "runs 100% Birthing Ritual, so must precede the Birthing Ritual rule"
+    },
+    {
+      "name": "Golgari Yawgmoth",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Yawgmoth, Thran Physician": 1
+      },
+      "notes": "100% inclusion, lift 258"
+    },
+    {
+      "name": "Merfolk",
+      "parent": null,
+      "priority": 5,
+      "any_of": [
+        "Lord of Atlantis",
+        "Tide Shaper",
+        "Master of the Pearl Trident"
+      ],
+      "any_min": 2,
+      "notes": "lift >750"
+    },
+    {
+      "name": "Jund Cosmogoyf",
+      "parent": null,
+      "priority": 5,
+      "all_of": {
+        "Thud": 1,
+        "Spoils of the Vault": 1
+      },
+      "notes": "lift >3000"
+    },
+    {
+      "name": "Death's Shadow",
+      "parent": null,
+      "priority": 8,
+      "all_of": {
+        "Death's Shadow": 1
+      },
+      "notes": "definitional"
+    },
+    {
+      "name": "Izzet Metalcraft",
+      "parent": null,
+      "priority": 12,
+      "all_of": {
+        "Mox Opal": 1
+      },
+      "any_of": [
+        "Emry, Lurker of the Loch",
+        "Mox Amber",
+        "Aether Spellbomb"
+      ],
+      "any_min": 2,
+      "notes": "Mox Opal shell without Loki; Loki + Affinity rules run first"
+    },
+    {
+      "name": "Dimir Midrange",
+      "parent": null,
+      "priority": 45,
+      "any_of": [
+        "Psychic Frog",
+        "Murktide Regent",
+        "Kaito, Bane of Nightmares",
+        "Quantum Riddler",
+        "Sheoldred's Edict",
+        "Orcish Bowmasters"
+      ],
+      "any_min": 3,
+      "notes": "never formed a weak-label cluster: 'Dimir Midrange' strips to nothing. Runs after Goryo's (Psychic Frog 97%) and Blink."
+    },
+    {
+      "name": "Jeskai Control",
+      "parent": "UWx Control",
+      "priority": 46,
+      "all_of": {
+        "Teferi, Time Raveler": 1,
+        "Steam Vents": 1
+      },
+      "any_of": [
+        "Wrath of the Skies",
+        "Solitude",
+        "Supreme Verdict",
+        "Orim's Chant",
+        "Isochron Scepter"
+      ],
+      "notes": "runs after Blink, which plays Teferi at 91%"
+    },
+    {
+      "name": "Azorius Control",
+      "parent": "UWx Control",
+      "priority": 47,
+      "all_of": {
+        "Teferi, Time Raveler": 1
+      },
+      "any_of": [
+        "Wrath of the Skies",
+        "Solitude",
+        "Supreme Verdict",
+        "Orim's Chant",
+        "Isochron Scepter"
+      ],
+      "none_of": [
+        "Steam Vents"
+      ],
+      "notes": "same shell without red"
+    },
+    {
+      "name": "Eldrazi Ramp",
+      "parent": null,
+      "priority": 48,
+      "all_of": {
+        "Ugin's Labyrinth": 1
+      },
+      "any_of": [
+        "Sowing Mycospawn",
+        "Eldrazi Temple",
+        "Ulamog, the Ceaseless Hunger",
+        "Ugin, Eye of the Storms",
+        "Emrakul, the Promised End"
+      ],
+      "any_min": 2,
+      "notes": "catch-all for the Gruul/Golgari/Izzet Eldrazi piles; runs last so Trudge, Tron and Broodscale claim theirs first"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "_comment": "Cards excluded from flex-slot analysis. Counts vary for reasons unrelated to deckbuilding choice (manabase tuning, functional equivalence). Edit freely; build_cards.py reads this at runtime.",
+  "fetchlands": [
+    "Arid Mesa",
+    "Bloodstained Mire",
+    "Evolving Wilds",
+    "Fabled Passage",
+    "Flooded Strand",
+    "Marsh Flats",
+    "Misty Rainforest",
+    "Polluted Delta",
+    "Prismatic Vista",
+    "Scalding Tarn",
+    "Terramorphic Expanse",
+    "Verdant Catacombs",
+    "Windswept Heath",
+    "Wooded Foothills"
+  ],
+  "basics": [
+    "Forest",
+    "Island",
+    "Mountain",
+    "Plains",
+    "Snow-Covered Forest",
+    "Snow-Covered Island",
+    "Snow-Covered Mountain",
+    "Snow-Covered Plains",
+    "Snow-Covered Swamp",
+    "Swamp",
+    "Wastes"
+  ],
+  "custom": []
+}

@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+data/raw/
+data/cache/
+web/data.js
