@@ -123,16 +123,48 @@ class MatchRecord:
         return self.deck_a == self.deck_b
 
 
+CONSTRUCTED_FORMAT = "Modern"
+
+
+def player_decklists(tournament: dict) -> dict[int, str]:
+    """player id -> decklist id, for players with exactly one list in the event.
+
+    melee's match rows do not always carry the Decklists array even when the
+    player registered a list: at the Ottawa RC 29% of rows came back without
+    one, at the Baltimore RC 5%, and the gap is not random by round. Those
+    players appear with their list on other rows of the same event, so the
+    join is recoverable. Only players with a single distinct list are mapped,
+    which is every player in a one-format event.
+    """
+    seen: dict[int, set[str]] = collections.defaultdict(set)
+    for rnd in tournament["rounds"]:
+        for match in rnd["matches"]:
+            for comp in match.get("Competitors") or []:
+                players = comp["Team"]["Players"]
+                deck_id = (comp.get("Decklists") or [{}])[0].get("DecklistId")
+                if players and deck_id:
+                    seen[players[0]["ID"]].add(deck_id)
+    return {pid: next(iter(ids)) for pid, ids in seen.items() if len(ids) == 1}
+
+
 def extract_matches(tournament: dict, archetype_of: dict[str, str],
                     swiss_only: bool = True, *, reference_date: str | None = None,
-                    half_life_days: float | None = None) -> list[MatchRecord]:
+                    half_life_days: float | None = None,
+                    constructed_format: str = CONSTRUCTED_FORMAT) -> list[MatchRecord]:
     """Flatten a fetched tournament into two-sided match records.
 
     Byes and single-competitor rows are dropped: they carry no matchup
     information and would inflate the win rate of whichever decks got them.
+
+    Rows missing their Decklists array are filled from `player_decklists`,
+    but only when the match's own Format is the constructed format: a Pro
+    Tour's draft rounds also arrive without decklists, and those players do
+    have a Modern list elsewhere in the event, so filling them would turn
+    limited matches into constructed ones.
     """
     reference = reference_date or datetime.date.today().isoformat()
     weight = recency_weight(tournament.get("start_date"), reference, half_life_days)
+    fallback = player_decklists(tournament)
     out: list[MatchRecord] = []
     for rnd in tournament["rounds"]:
         if swiss_only and not rnd["is_swiss"]:
@@ -145,13 +177,16 @@ def extract_matches(tournament: dict, archetype_of: dict[str, str],
             # would read as a 0-0 draw.
             if match.get("HasResult") is False:
                 continue
+            can_fill = (match.get("Format") or constructed_format) == constructed_format
             sides = []
             for comp in comps:
                 players = comp["Team"]["Players"]
-                decks = comp.get("Decklists") or []
-                if not players or not decks:
+                if not players:
                     break
-                deck_id = decks[0].get("DecklistId")
+                decks = comp.get("Decklists") or []
+                deck_id = decks[0].get("DecklistId") if decks else None
+                if not deck_id and can_fill:
+                    deck_id = fallback.get(players[0]["ID"])
                 if not deck_id or deck_id not in archetype_of:
                     break
                 sides.append((players[0]["ID"], archetype_of[deck_id],
