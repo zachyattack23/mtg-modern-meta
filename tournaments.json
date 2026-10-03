@@ -609,5 +609,17 @@
     "date": "2026-05-31",
     "players": 18,
     "swiss_rounds": 5
+  },
+  {
+    "id": 411350,
+    "label": "Champions Cup Final Season 5 Round 1 (Japan RC)",
+    "date": "2026-10-03",
+    "swiss_rounds": 13
+  },
+  {
+    "id": 459699,
+    "label": "Ottawa 2026-27 Round 1 Regional Championship",
+    "date": "2026-10-03",
+    "swiss_rounds": 14
   }
 ]

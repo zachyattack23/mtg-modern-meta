@@ -141,6 +141,10 @@ def extract_matches(tournament: dict, archetype_of: dict[str, str],
             comps = match.get("Competitors") or []
             if len(comps) != 2:
                 continue
+            # A match still being played has no game counts; without this it
+            # would read as a 0-0 draw.
+            if match.get("HasResult") is False:
+                continue
             sides = []
             for comp in comps:
                 players = comp["Team"]["Players"]

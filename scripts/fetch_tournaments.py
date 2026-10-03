@@ -40,8 +40,14 @@ def decklist_ids_from_matches(matches: list[dict]) -> set[str]:
 def fetch_tournament(tournament_id: int, *, refresh: bool = False) -> dict:
     out_path = RAW / f"tournament_{tournament_id}.json"
     if out_path.exists() and not refresh:
-        print(f"[{tournament_id}] cached -> {out_path.name}")
-        return json.loads(out_path.read_text())
+        cached = json.loads(out_path.read_text())
+        # An event fetched mid-swiss is re-pulled on every run until it is
+        # complete, so a partial snapshot never silently becomes the record.
+        if cached.get("complete", True):
+            print(f"[{tournament_id}] cached -> {out_path.name}")
+            return cached
+        print(f"[{tournament_id}] cached snapshot was incomplete "
+              f"({cached.get('rounds_played')} rounds); re-fetching")
 
     meta = melee.get_tournament(tournament_id)
     print(f"[{tournament_id}] {meta.name} ({meta.start_date}) — {len(meta.rounds)} rounds")
@@ -59,10 +65,24 @@ def fetch_tournament(tournament_id: int, *, refresh: bool = False) -> dict:
         })
 
     # Standings from the last swiss round give each player's final swiss record.
+    # While an event is still running, later rounds have no matches yet and the
+    # current round has none reported, so take the latest swiss round that has
+    # matches and mark the snapshot incomplete.
     swiss = [r for r in meta.rounds if r.is_swiss]
-    final_round = swiss[-1] if swiss else meta.rounds[-1]
+    played = {r["round_id"] for r in rounds_out if r["matches"]}
+    swiss_played = [r for r in swiss if r.id in played]
+    complete = bool(swiss) and len(swiss_played) == len(swiss) and all(
+        m.get("HasResult", True)
+        for r in rounds_out if r["is_swiss"] for m in r["matches"])
+    final_round = (swiss_played[-1] if swiss_played
+                   else swiss[-1] if swiss else meta.rounds[-1])
     standings = melee.get_standings(tournament_id, final_round.id)
-    print(f"  standings ({final_round.name}): {len(standings)} players")
+    if not standings and len(swiss_played) >= 2:
+        # Standings for a round in progress are empty; fall back one round.
+        final_round = swiss_played[-2]
+        standings = melee.get_standings(tournament_id, final_round.id)
+    print(f"  standings ({final_round.name}): {len(standings)} players"
+          f"{'' if complete else '  (event in progress)'}")
 
     payload = {
         "tournament_id": tournament_id,
@@ -73,6 +93,9 @@ def fetch_tournament(tournament_id: int, *, refresh: bool = False) -> dict:
         "rounds": rounds_out,
         "standings": standings,
         "standings_round": final_round.name,
+        "complete": complete,
+        "rounds_played": len(swiss_played),
+        "swiss_rounds": len(swiss),
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, ensure_ascii=False))
