@@ -6,8 +6,11 @@ as distinct from its average across everyone who sleeved it up.
 
 Dashboard: https://claude.ai/artifact/TEvEvpbmYqkEkFECAqwTGj
 
-**Scope**: 17 Modern events of 100+ players, 2026-05-24 to 2026-09-20 — 8,368 deck
-entries, 17,914 swiss matches. The window opens at the Phlage ban (18 May 2026).
+**Scope**: 19 Modern events of 100+ players, 2026-05-24 to 2026-10-03 — 9,367 deck
+entries, 22,561 swiss matches. The window opens at the Phlage ban (18 May 2026).
+The two newest events (Japan Champions Cup Final and the Ottawa RC, both
+2026-10-03) are day-1 snapshots: 8 of 13 and 9 of 14 swiss rounds. Re-running
+`fetch_tournaments.py` picks up the rest once they finish.
 
 ## Quick start
 
@@ -19,7 +22,13 @@ python3 scripts/build_dataset.py                                 # classify + st
 python3 scripts/build_cards.py                                   # flex slots
 python3 scripts/build_web_payload.py                             # web/data.js
 python3 scripts/build_standalone.py                              # one shareable file
+python3 scripts/compare_events.py 411350 459699                 # new events vs baseline
 ```
+
+`compare_events.py` answers "did deck X move at the latest event?" without a
+re-fit: it classifies the named events and sets their plain win rates beside
+the committed dashboard's, with a two-proportion z-test. The full pipeline
+(`build_dataset.py --min-event-players 100`) is what produces the dashboard.
 
 `build_standalone.py` produces `dist/modern-ceiling-report.html`: a single
 self-contained file with the data inlined and its own charset declaration. It
@@ -88,6 +97,23 @@ rules.json                the classifier -- edit this
 ignore_cards.json         cards excluded from flex analysis (fetches, basics)
 archetype_overrides.csv   decklist_id -> archetype, beats the rules
 ```
+
+## Two melee quirks the fetcher handles
+
+**Match rows without decklists.** melee's match endpoint does not always carry
+the Decklists array even when the player registered a list: 29% of rows at the
+Ottawa RC, 5% at the Baltimore RC. The same player has the list on other rows
+of the same event, so `stats.extract_matches` fills the gap from a per-event
+player-to-decklist map. The fill is gated on the match's own `Format` being
+Modern, because a Pro Tour's draft rounds also arrive without decklists and
+those players do have a Modern list elsewhere in the event. On the 17-event
+baseline the fix added 6% more matches and moved no deck's win rate by more
+than half a point.
+
+**Events still in progress.** A snapshot taken mid-swiss is flagged
+`complete: false`, takes standings from the latest played round, and is
+re-pulled on the next run. Matches with `HasResult == false` are skipped
+rather than read as 0-0 draws.
 
 ## Known limits
 
