@@ -7,10 +7,8 @@ as distinct from its average across everyone who sleeved it up.
 Dashboard: https://claude.ai/artifact/TEvEvpbmYqkEkFECAqwTGj
 
 **Scope**: 19 Modern events of 100+ players, 2026-05-24 to 2026-10-03 — 9,367 deck
-entries, 22,561 swiss matches. The window opens at the Phlage ban (18 May 2026).
-The two newest events (Japan Champions Cup Final and the Ottawa RC, both
-2026-10-03) are day-1 snapshots: 8 of 13 and 9 of 14 swiss rounds. Re-running
-`fetch_tournaments.py` picks up the rest once they finish.
+entries, 23,219 swiss matches. The window opens at the Phlage ban (18 May 2026)
+and currently closes with the Japan Champions Cup Final and the Ottawa RC.
 
 ## Quick start
 
