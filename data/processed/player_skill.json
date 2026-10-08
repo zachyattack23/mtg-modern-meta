@@ -1,235 +1,211 @@
 {
   "decks": [
     {
-      "deck": "Mono-Green Broodscale",
-      "matches": 1659,
-      "raw_win_rate": 0.5846895720313442,
-      "adjusted_win_rate": 0.6041014843751895,
-      "deck_effect_logit": 0.422584299573628,
-      "mean_pilot_skill": 0.03480699914838383
-    },
-    {
-      "deck": "Esper Blink",
-      "matches": 2076,
-      "raw_win_rate": 0.5303468208092486,
-      "adjusted_win_rate": 0.5488537386744509,
-      "deck_effect_logit": 0.19604040052437563,
-      "mean_pilot_skill": 0.03477311413082628
-    },
-    {
-      "deck": "Devoted Druid",
-      "matches": 1301,
-      "raw_win_rate": 0.5272867025365103,
-      "adjusted_win_rate": 0.5463895208972055,
-      "deck_effect_logit": 0.18609327540168963,
-      "mean_pilot_skill": 0.02578750883816326
+      "deck": "Broodscale",
+      "matches": 4207,
+      "raw_win_rate": 0.555027335393392,
+      "adjusted_win_rate": 0.5703546322026206,
+      "deck_effect_logit": 0.2832981867638216,
+      "mean_pilot_skill": 0.029670833856148066
     },
     {
       "deck": "Affinity",
-      "matches": 2197,
-      "raw_win_rate": 0.5275375512061903,
-      "adjusted_win_rate": 0.5438862508336357,
-      "deck_effect_logit": 0.17599789892651305,
-      "mean_pilot_skill": 0.03314839081629192
+      "matches": 2537,
+      "raw_win_rate": 0.5301537248718959,
+      "adjusted_win_rate": 0.5473627847706903,
+      "deck_effect_logit": 0.1900208536080314,
+      "mean_pilot_skill": 0.03146062232792232
     },
     {
-      "deck": "Loki",
-      "matches": 342,
-      "raw_win_rate": 0.5292397660818714,
-      "adjusted_win_rate": 0.540031489377404,
-      "deck_effect_logit": 0.16046941954829474,
-      "mean_pilot_skill": 0.05532914944821339
-    },
-    {
-      "deck": "Gruul Broodscale",
-      "matches": 1672,
-      "raw_win_rate": 0.5221291866028708,
-      "adjusted_win_rate": 0.5395864979356028,
-      "deck_effect_logit": 0.15867809843246267,
-      "mean_pilot_skill": 0.022902723689501008
-    },
-    {
-      "deck": "Boros Land Destruction",
-      "matches": 924,
-      "raw_win_rate": 0.5119047619047619,
-      "adjusted_win_rate": 0.5323114456484717,
-      "deck_effect_logit": 0.12942614996778368,
-      "mean_pilot_skill": 0.02604480815349932
-    },
-    {
-      "deck": "Golgari Yawgmoth",
-      "matches": 309,
-      "raw_win_rate": 0.5242718446601942,
-      "adjusted_win_rate": 0.5299875271376667,
-      "deck_effect_logit": 0.12009424020978808,
-      "mean_pilot_skill": 0.050152031423902586
-    },
-    {
-      "deck": "Eldrazi Trudge",
-      "matches": 1241,
-      "raw_win_rate": 0.5124899274778405,
-      "adjusted_win_rate": 0.5286745099377739,
-      "deck_effect_logit": 0.11482403231803047,
-      "mean_pilot_skill": 0.027404526656938995
-    },
-    {
-      "deck": "Green Tron",
-      "matches": 498,
-      "raw_win_rate": 0.5100401606425703,
-      "adjusted_win_rate": 0.5271211272643126,
-      "deck_effect_logit": 0.10859109245194304,
-      "mean_pilot_skill": 0.024208522763865117
+      "deck": "Blink",
+      "matches": 2565,
+      "raw_win_rate": 0.5290448343079922,
+      "adjusted_win_rate": 0.5462713279617092,
+      "deck_effect_logit": 0.18561640926909848,
+      "mean_pilot_skill": 0.031599641500914044
     },
     {
       "deck": "Hollow One",
-      "matches": 320,
-      "raw_win_rate": 0.5125,
-      "adjusted_win_rate": 0.5267293145998876,
-      "deck_effect_logit": 0.1070192836716066,
-      "mean_pilot_skill": 0.02073543612366057
+      "matches": 394,
+      "raw_win_rate": 0.5228426395939086,
+      "adjusted_win_rate": 0.5407514991976808,
+      "deck_effect_logit": 0.16336837762866913,
+      "mean_pilot_skill": 0.01770739879015609
     },
     {
-      "deck": "Jeskai Control",
-      "matches": 663,
-      "raw_win_rate": 0.5113122171945701,
-      "adjusted_win_rate": 0.526234214496102,
-      "deck_effect_logit": 0.10503331217338656,
-      "mean_pilot_skill": 0.03800210671181
+      "deck": "Devoted Druid",
+      "matches": 1530,
+      "raw_win_rate": 0.5169934640522876,
+      "adjusted_win_rate": 0.5351422346552082,
+      "deck_effect_logit": 0.14080109291304804,
+      "mean_pilot_skill": 0.02688744581869547
     },
     {
-      "deck": "Living End",
-      "matches": 817,
-      "raw_win_rate": 0.5091799265605875,
-      "adjusted_win_rate": 0.5232661567710076,
-      "deck_effect_logit": 0.09313188406988229,
-      "mean_pilot_skill": 0.031995528856401285
+      "deck": "Loki",
+      "matches": 382,
+      "raw_win_rate": 0.5209424083769634,
+      "adjusted_win_rate": 0.5321592926160479,
+      "deck_effect_logit": 0.1288149975930591,
+      "mean_pilot_skill": 0.050433008545690015
     },
     {
-      "deck": "Jeskai Energy",
-      "matches": 378,
-      "raw_win_rate": 0.5,
-      "adjusted_win_rate": 0.5196650912292555,
-      "deck_effect_logit": 0.0787009615447795,
-      "mean_pilot_skill": 0.02233249861595669
-    },
-    {
-      "deck": "Tameshi Belcher",
-      "matches": 365,
-      "raw_win_rate": 0.5013698630136987,
-      "adjusted_win_rate": 0.5183752694691991,
-      "deck_effect_logit": 0.0735341949547502,
-      "mean_pilot_skill": 0.019363709296234724
-    },
-    {
-      "deck": "Eldrazi Ramp",
-      "matches": 525,
-      "raw_win_rate": 0.4990476190476191,
-      "adjusted_win_rate": 0.5149647049124862,
-      "deck_effect_logit": 0.059876702498705095,
-      "mean_pilot_skill": 0.021129811832153
-    },
-    {
-      "deck": "Dimir Midrange",
-      "matches": 1320,
-      "raw_win_rate": 0.49772727272727274,
-      "adjusted_win_rate": 0.51488686047802,
-      "deck_effect_logit": 0.05956504703905551,
-      "mean_pilot_skill": 0.03535108611497828
-    },
-    {
-      "deck": "Boros Energy",
-      "matches": 1632,
-      "raw_win_rate": 0.4993872549019608,
-      "adjusted_win_rate": 0.5146220983458892,
-      "deck_effect_logit": 0.05850507548507866,
-      "mean_pilot_skill": 0.03071549800378456
-    },
-    {
-      "deck": "Izzet Prowess",
-      "matches": 3298,
-      "raw_win_rate": 0.4954517889630079,
-      "adjusted_win_rate": 0.5127802871220051,
-      "deck_effect_logit": 0.05113228606842579,
-      "mean_pilot_skill": 0.028435273058165383
+      "deck": "UWx Control",
+      "matches": 1276,
+      "raw_win_rate": 0.5156739811912225,
+      "adjusted_win_rate": 0.5314250163460623,
+      "deck_effect_logit": 0.12586596915768994,
+      "mean_pilot_skill": 0.03336567956833406
     },
     {
       "deck": "Domain Zoo",
-      "matches": 801,
-      "raw_win_rate": 0.49563046192259674,
-      "adjusted_win_rate": 0.508845465201496,
-      "deck_effect_logit": 0.035385552641350126,
-      "mean_pilot_skill": 0.03504669802856434
+      "matches": 1013,
+      "raw_win_rate": 0.5143139190523198,
+      "adjusted_win_rate": 0.5306216484450941,
+      "deck_effect_logit": 0.12264007784947101,
+      "mean_pilot_skill": 0.029749079619811873
     },
     {
-      "deck": "Goryo's Vengeance",
-      "matches": 2801,
-      "raw_win_rate": 0.4891110317743663,
-      "adjusted_win_rate": 0.5059989745233071,
-      "deck_effect_logit": 0.023997049602112658,
-      "mean_pilot_skill": 0.02552117167417038
+      "deck": "Eldrazi Trudge",
+      "matches": 1297,
+      "raw_win_rate": 0.5104086353122591,
+      "adjusted_win_rate": 0.5254475270535692,
+      "deck_effect_logit": 0.10187813425757784,
+      "mean_pilot_skill": 0.03360801204728864
+    },
+    {
+      "deck": "Tameshi Belcher",
+      "matches": 445,
+      "raw_win_rate": 0.5078651685393258,
+      "adjusted_win_rate": 0.5236453811177072,
+      "deck_effect_logit": 0.09465212711750119,
+      "mean_pilot_skill": 0.023429532877299673
+    },
+    {
+      "deck": "Golgari Yawgmoth",
+      "matches": 325,
+      "raw_win_rate": 0.5138461538461538,
+      "adjusted_win_rate": 0.5217061659716152,
+      "deck_effect_logit": 0.08687926978538577,
+      "mean_pilot_skill": 0.05063513242704398
+    },
+    {
+      "deck": "Boros Land Destruction",
+      "matches": 1078,
+      "raw_win_rate": 0.49536178107606677,
+      "adjusted_win_rate": 0.5160855611149292,
+      "deck_effect_logit": 0.06436445592351749,
+      "mean_pilot_skill": 0.028326330147098903
+    },
+    {
+      "deck": "Living End",
+      "matches": 902,
+      "raw_win_rate": 0.5011086474501109,
+      "adjusted_win_rate": 0.515855205499812,
+      "deck_effect_logit": 0.06344209243984521,
+      "mean_pilot_skill": 0.03279994260265974
+    },
+    {
+      "deck": "Eldrazi Ramp",
+      "matches": 601,
+      "raw_win_rate": 0.49750415973377704,
+      "adjusted_win_rate": 0.5152563427822694,
+      "deck_effect_logit": 0.06104432041018955,
+      "mean_pilot_skill": 0.019903572601087237
+    },
+    {
+      "deck": "Dimir Midrange",
+      "matches": 1479,
+      "raw_win_rate": 0.49628127112914133,
+      "adjusted_win_rate": 0.5136185995939251,
+      "deck_effect_logit": 0.05448787525856548,
+      "mean_pilot_skill": 0.03310618310090829
+    },
+    {
+      "deck": "Energy",
+      "matches": 2368,
+      "raw_win_rate": 0.4953547297297297,
+      "adjusted_win_rate": 0.5130489616140044,
+      "deck_effect_logit": 0.05220770152588848,
+      "mean_pilot_skill": 0.031096228420398227
+    },
+    {
+      "deck": "Izzet Prowess",
+      "matches": 4013,
+      "raw_win_rate": 0.4933964615001246,
+      "adjusted_win_rate": 0.5117155183796008,
+      "deck_effect_logit": 0.04687065231458294,
+      "mean_pilot_skill": 0.028472714667764697
     },
     {
       "deck": "Amulet Titan",
-      "matches": 869,
-      "raw_win_rate": 0.48676639815880324,
-      "adjusted_win_rate": 0.5023683031372618,
-      "deck_effect_logit": 0.009473283395228184,
-      "mean_pilot_skill": 0.02782518226973848
-    },
-    {
-      "deck": "Ruby Storm",
-      "matches": 1022,
-      "raw_win_rate": 0.4794520547945205,
-      "adjusted_win_rate": 0.49330679254831555,
-      "deck_effect_logit": -0.02677442917429965,
-      "mean_pilot_skill": 0.030981363234102298
-    },
-    {
-      "deck": "Neoform",
-      "matches": 800,
-      "raw_win_rate": 0.4725,
-      "adjusted_win_rate": 0.48698865351749615,
-      "deck_effect_logit": -0.05205713874666056,
-      "mean_pilot_skill": 0.0427232508896688
+      "matches": 1111,
+      "raw_win_rate": 0.49054905490549056,
+      "adjusted_win_rate": 0.5096142101292742,
+      "deck_effect_logit": 0.0384615811455186,
+      "mean_pilot_skill": 0.023775357659867442
     },
     {
       "deck": "Birthing Ritual",
-      "matches": 440,
-      "raw_win_rate": 0.4681818181818182,
-      "adjusted_win_rate": 0.4837700784776726,
-      "deck_effect_logit": -0.0649425012042907,
-      "mean_pilot_skill": 0.023407966883493402
+      "matches": 527,
+      "raw_win_rate": 0.4876660341555977,
+      "adjusted_win_rate": 0.5034234542626773,
+      "deck_effect_logit": 0.013694031046156779,
+      "mean_pilot_skill": 0.024497011965790693
     },
     {
-      "deck": "Eldrazi Tron",
-      "matches": 979,
-      "raw_win_rate": 0.4637385086823289,
-      "adjusted_win_rate": 0.479127113131182,
-      "deck_effect_logit": -0.08354009875966219,
-      "mean_pilot_skill": 0.02678323118163048
+      "deck": "Ruby Storm",
+      "matches": 1163,
+      "raw_win_rate": 0.4866723989681857,
+      "adjusted_win_rate": 0.502064035184586,
+      "deck_effect_logit": 0.008256187636358391,
+      "mean_pilot_skill": 0.031277697321100334
+    },
+    {
+      "deck": "Goryo's Vengeance",
+      "matches": 3174,
+      "raw_win_rate": 0.47952110901071204,
+      "adjusted_win_rate": 0.49755876154851914,
+      "deck_effect_logit": -0.009765031401246542,
+      "mean_pilot_skill": 0.026771945580740964
+    },
+    {
+      "deck": "Tron",
+      "matches": 1730,
+      "raw_win_rate": 0.47803468208092487,
+      "adjusted_win_rate": 0.4949126820674396,
+      "deck_effect_logit": -0.020349973981205638,
+      "mean_pilot_skill": 0.02614899637454597
+    },
+    {
+      "deck": "Neoform",
+      "matches": 983,
+      "raw_win_rate": 0.4760935910478128,
+      "adjusted_win_rate": 0.49008570360634823,
+      "deck_effect_logit": -0.0396623841804563,
+      "mean_pilot_skill": 0.045212282976515424
     },
     {
       "deck": "Reanimator",
-      "matches": 596,
-      "raw_win_rate": 0.45302013422818793,
-      "adjusted_win_rate": 0.46401272814075206,
-      "deck_effect_logit": -0.144198431069744,
-      "mean_pilot_skill": 0.027401808329430555
+      "matches": 739,
+      "raw_win_rate": 0.45737483085250336,
+      "adjusted_win_rate": 0.47103732330242093,
+      "deck_effect_logit": -0.11598054136511544,
+      "mean_pilot_skill": 0.02860687944578702
     },
     {
       "deck": "Unclassified",
-      "matches": 1232,
-      "raw_win_rate": 0.38636363636363635,
-      "adjusted_win_rate": 0.39795681808767963,
-      "deck_effect_logit": -0.41398567135660963,
-      "mean_pilot_skill": 0.03088646760055336
+      "matches": 1610,
+      "raw_win_rate": 0.4018633540372671,
+      "adjusted_win_rate": 0.4151680619578513,
+      "deck_effect_logit": -0.342641113733272,
+      "mean_pilot_skill": 0.031530857461872605
     }
   ],
-  "player_skill_sd_logit": 0.08423584806982824,
-  "n_matches": 17489,
-  "n_players": 4061,
-  "n_deck_switchers": 384,
-  "n_mirrors": 1020,
+  "player_skill_sd_logit": 0.0838394369525119,
+  "n_matches": 20956,
+  "n_players": 4994,
+  "n_deck_switchers": 389,
+  "n_mirrors": 1420,
   "prior_sd_player": 0.25,
   "prior_sd_deck": 0.5
 }
